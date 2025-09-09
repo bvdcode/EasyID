@@ -1,6 +1,6 @@
 using EasyID.Server.Database;
-using Microsoft.EntityFrameworkCore;
 using EasyExtensions.EntityFrameworkCore.Extensions;
+using EasyExtensions.EntityFrameworkCore.Npgsql.Extensions;
 
 namespace EasyID.Server
 {
@@ -11,8 +11,8 @@ namespace EasyID.Server
             var builder = WebApplication.CreateBuilder(args);
             string[] corsOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
                 ?? throw new ArgumentNullException(null, "Allowed origins cannot be null.");
+            builder.Services.AddPostgresDbContext<AppDbContext>(builder.Configuration);
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlite(builder.Configuration["SqliteConnectionString"]));
 
             var app = builder.Build();
             app.UseCors().UseDefaultFiles();

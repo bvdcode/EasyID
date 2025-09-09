@@ -1,4 +1,11 @@
-import { Alert, Box, Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -38,12 +45,13 @@ const LoginPage: React.FC = () => {
         userSelect: "none",
       }}
     >
-      <Box display="flex" flexDirection="column" gap={2} maxWidth={480} padding={2}>
-        {hasUsers === false && (
-          <Alert severity="info">
-            {t("loginPage.firstUserInfo")}
-          </Alert>
-        )}
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={2}
+        maxWidth={480}
+        padding={2}
+      >
         <Typography variant="h6">{t("loginPage.loginTitle")}</Typography>
         <TextField
           id="username-input"
@@ -64,10 +72,17 @@ const LoginPage: React.FC = () => {
           type="password"
           autoComplete="current-password"
         />
-        <Button variant="contained" color="primary" onClick={handleLogin} disabled={!password}>
+        {hasUsers === false && (
+          <Alert severity="info">{t("loginPage.firstUserInfo")}</Alert>
+        )}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleLogin}
+          disabled={!password}
+        >
           {t("loginPage.loginButton")}
         </Button>
-        <Alert severity="info">{t("loginPage.infoMessage")}</Alert>
       </Box>
     </Paper>
   );

@@ -13,6 +13,7 @@ function App() {
         <ConfirmProvider>
           <BrowserRouter basename="/">
             <Routes>
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/vault" element={<VaultPage />} />
               <Route path="*" element={<LoginPage />} />
             </Routes>

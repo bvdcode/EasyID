@@ -1,7 +1,7 @@
-import axios from "axios";
+import apiClient from "../api/apiClient";
 import { VaultData } from "../types";
 
-const API_BASE_URL = "/api/v1";
+const API_BASE_URL = ""; // base is set in apiClient
 
 export default class VaultApiService {
   /**
@@ -11,7 +11,7 @@ export default class VaultApiService {
    * * @throws Error if the request fails
    */
   static async getVaultData(password: string): Promise<VaultData[]> {
-    const response = await axios.get<VaultData[]>(
+    const response = await apiClient.get<VaultData[]>(
       `${API_BASE_URL}/vault/${encodeURIComponent(password)}`,
     );
     if (response.status !== 200) {
@@ -42,7 +42,7 @@ export default class VaultApiService {
     if (data.length === 0) {
       throw new Error("Data array cannot be empty");
     }
-    const response = await axios.post(
+  const response = await apiClient.post(
       `${API_BASE_URL}/vault/${encodeURIComponent(password)}`,
       data,
     );

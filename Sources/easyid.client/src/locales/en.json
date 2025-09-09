@@ -1,9 +1,12 @@
 {
   "loginPage": {
-    "passwordTitle": "Enter your encryption key:",
+  "loginTitle": "Sign in",
+  "usernameLabel": "Username",
+  "passwordTitle": "Password",
     "loginButton": "Connect",
     "infoMessage": "When you connect, the Vault will be unsealed",
-    "emptyPasswordError": "Please enter your key"
+  "emptyPasswordError": "Please enter your key",
+  "firstUserInfo": "No users found. You will be the first user. Enter username and password to become the administrator."
   },
   "settings": {
     "language": "Language",

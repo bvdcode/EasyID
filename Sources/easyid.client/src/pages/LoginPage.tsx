@@ -1,29 +1,29 @@
-import {
-  Alert,
-  Box,
-  Button,
-  IconButton,
-  InputLabel,
-  Paper,
-  TextField,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Alert, Box, Button, Paper, TextField, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { MetricsService } from "../services";
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isHidden, setIsHidden] = useState<boolean>(true);
-  const [password, setPassword] = React.useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [hasUsers, setHasUsers] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    MetricsService.hasUsers()
+      .then(setHasUsers)
+      .catch(() => setHasUsers(true)); // if API fails, assume users exist to avoid misleading message
+  }, []);
 
   const handleLogin = () => {
     if (!password) {
       alert(t("loginPage.emptyPasswordError"));
       return;
     }
-
+    // For now, keep existing behavior: navigate to vault with password as state
+    // Backend auth endpoints are wired but not used yet because Vault API expects password
     navigate("/vault", { state: { password } });
   };
 
@@ -38,49 +38,36 @@ const LoginPage: React.FC = () => {
         userSelect: "none",
       }}
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        maxWidth={600}
-        margin="auto"
-        padding={2}
-      >
-        <InputLabel htmlFor="password-input">
-          {t("loginPage.passwordTitle")}
-        </InputLabel>
+      <Box display="flex" flexDirection="column" gap={2} maxWidth={480} padding={2}>
+        {hasUsers === false && (
+          <Alert severity="info">
+            {t("loginPage.firstUserInfo")}
+          </Alert>
+        )}
+        <Typography variant="h6">{t("loginPage.loginTitle")}</Typography>
+        <TextField
+          id="username-input"
+          label={t("loginPage.usernameLabel")}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          fullWidth
+          variant="outlined"
+          autoComplete="username"
+        />
         <TextField
           id="password-input"
+          label={t("loginPage.passwordTitle")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
           variant="outlined"
-          margin="normal"
-          autoFocus
-          type={isHidden ? "password" : "text"}
-          slotProps={{
-            input: {
-              endAdornment: (
-                <IconButton onClick={() => setIsHidden(!isHidden)}>
-                  {isHidden ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              ),
-            },
-          }}
+          type="password"
+          autoComplete="current-password"
         />
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleLogin}
-          disabled={!password}
-        >
+        <Button variant="contained" color="primary" onClick={handleLogin} disabled={!password}>
           {t("loginPage.loginButton")}
         </Button>
-        <Alert severity="info" style={{ marginTop: 16 }}>
-          {t("loginPage.infoMessage")}
-        </Alert>
+        <Alert severity="info">{t("loginPage.infoMessage")}</Alert>
       </Box>
     </Paper>
   );

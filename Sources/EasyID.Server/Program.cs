@@ -13,6 +13,7 @@ namespace EasyID.Server
                 ?? throw new ArgumentNullException(null, "Allowed origins cannot be null.");
             builder.Services.AddPostgresDbContext<AppDbContext>(builder.Configuration);
             builder.Services.AddControllers();
+            builder.Services.AddHealthChecks();
 
             var app = builder.Build();
             app.UseCors().UseDefaultFiles();

@@ -10,6 +10,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="EasyExtensions.AspNetCore" Version="1.0.34" />
+		<PackageReference Include="EasyExtensions.AspNetCore.Authorization" Version="1.0.34" />
 		<PackageReference Include="EasyExtensions.EntityFrameworkCore" Version="1.0.34" />
 		<PackageReference Include="EasyExtensions.EntityFrameworkCore.Npgsql" Version="1.0.34" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="9.0.8" />

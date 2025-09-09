@@ -6,6 +6,7 @@
 
         public const string Version = Base + "/v1";
 
+        public const string Users = Version + "/users";
         public const string Metrics = Version + "/metrics";
     }
 }

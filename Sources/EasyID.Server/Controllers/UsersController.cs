@@ -9,7 +9,10 @@ namespace EasyID.Server.Controllers
         [HttpGet(Routes.Users + "/me")]
         public IActionResult Me()
         {
-            return Ok();
+            return Ok(new
+            {
+                Name = User.Identity?.Name,
+            });
         }
     }
 }

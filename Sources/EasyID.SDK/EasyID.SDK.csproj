@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Nullable>enable</Nullable>
+		<Authors>Vadim Belov</Authors>
+		<Company>bvdcode</Company>
+		<Product>EasyID</Product>
+		<Description>.NET Standard library for EasyID access.</Description>
+		<Copyright>Copyright © Vadim Belov 2025</Copyright>
+		<Summary>
+			EasyID is a lightweight Identity and Secrets Management solution for any applications and services.
+		</Summary>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Title>EasyID</Title>
+		<PackageId>EasyID</PackageId>
+		<PackageTags>ASP.NET,Auth,OIDC,JWT,Authorization,Authentication</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>easyid.png</PackageIcon>
+		<PackageIconUrl>https://media.githubusercontent.com/media/bvdcode/EasyID/refs/heads/main/Sources/EasyID.SDK/easyid.png</PackageIconUrl>
+		<PackageProjectUrl>https://github.com/bvdcode/EasyID</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/bvdcode/EasyID.git</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="vault.png" Pack="true" PackagePath="" />
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
+		<PackageReference Include="System.Text.Json" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+	</ItemGroup>
+</Project>

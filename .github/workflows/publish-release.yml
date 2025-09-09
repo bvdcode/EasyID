@@ -1,0 +1,132 @@
+name: Build and push
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Sources/EasyID.SDK/**"
+      - "Sources/easyid.client/**"
+      - "Sources/EasyID.Server/**"
+      - ".github/workflows/publish-release.yml"
+  workflow_dispatch:
+
+env:
+  CONTEXT_DIR: Sources
+  DOCKER_NAMESPACE: bvdcode
+  DOCKER_IMAGE_NAME: easyid
+  DOCKERFILE: EasyID.Server/Dockerfile
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout (full history + tags)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3.1.11
+        with:
+          versionSpec: 5.x
+
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v3.1.11
+
+      - name: Display GitVersion outputs
+        run: |
+          echo "SemVer: ${{ steps.gitversion.outputs.SemVer }}"
+          echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
+          echo "Major.Minor: v${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}"
+
+      - name: Compose tags
+        id: tags
+        shell: bash
+        run: |
+          V_MINOR="v${{ steps.gitversion.outputs.Major }}.${{ steps.gitversion.outputs.Minor }}"
+          echo "minor_tag=$V_MINOR" >> "$GITHUB_OUTPUT"
+          echo "docker_tag=${{ env.DOCKER_NAMESPACE }}/${{ env.DOCKER_IMAGE_NAME }}:$V_MINOR" >> "$GITHUB_OUTPUT"
+          echo "docker_tag_latest=${{ env.DOCKER_NAMESPACE }}/${{ env.DOCKER_IMAGE_NAME }}:latest" >> "$GITHUB_OUTPUT"
+          echo "ghcr_tag=ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_NAME }}:$V_MINOR" >> "$GITHUB_OUTPUT"
+          echo "ghcr_tag_latest=ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE_NAME }}:latest" >> "$GITHUB_OUTPUT"
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push to Docker Hub (vX.Y + latest)
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.CONTEXT_DIR }}
+          file: ${{ env.CONTEXT_DIR }}/${{ env.DOCKERFILE }}
+          push: true
+          tags: |
+            ${{ steps.tags.outputs.docker_tag }}
+            ${{ steps.tags.outputs.docker_tag_latest }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push to GHCR (vX.Y + latest)
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.CONTEXT_DIR }}
+          file: ${{ env.CONTEXT_DIR }}/${{ env.DOCKERFILE }}
+          push: true
+          tags: |
+            ${{ steps.tags.outputs.ghcr_tag }}
+            ${{ steps.tags.outputs.ghcr_tag_latest }}
+
+      #Build/pack the project
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 9.0.x
+      - name: Build and Pack NuGet package
+        run: |
+          cd Sources/EasyID.SDK
+          dotnet build --configuration Release
+          dotnet pack --configuration Release --output nupkg -p:Version='${{ steps.gitversion.outputs.SemVer }}'
+      - name: Upload NuGet package to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: Sources/EasyID.SDK/nupkg
+
+      #Push NuGet package to GitHub packages
+      - name: Download nuget package artifact
+        uses: actions/download-artifact@v4.0.0
+        with:
+          name: nupkg
+      - name: Prep packages
+        run: dotnet nuget add source --username bvdcode --password ${{ secrets.DEPLOY_GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/bvdcode/index.json"
+      - name: Push package to GitHub packages
+        if: steps.gitversion.outputs.CommitsSinceVersionSource > 0 #Only release if there has been a commit/version change
+        run: |
+          dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.DEPLOY_GITHUB_TOKEN }} --source "github"
+          dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+
+      #Create release
+      - name: Create GitHub Release (only if version advanced)
+        if: ${{ steps.gitversion.outputs.CommitsSinceVersionSource > 0 }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tags.outputs.minor_tag }}
+          name: Release ${{ steps.tags.outputs.minor_tag }}
+          draft: false
+          prerelease: false
+          token: ${{ github.token }}

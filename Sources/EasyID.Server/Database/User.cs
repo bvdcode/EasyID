@@ -12,8 +12,11 @@ namespace EasyID.Server.Database
         [Column("email")]
         public string Email { get; set; } = string.Empty;
 
-        [Column("password_hash")]
-        public string? PasswordHash { get; set; }
+        [Column("password_phc")]
+        public string? PasswordPhc { get; set; }
+
+        [Column("password_version")]
+        public int? PasswordVersion { get; set; }
 
         [Column("first_name")]
         public string? FirstName { get; set; }
@@ -23,5 +26,14 @@ namespace EasyID.Server.Database
 
         [Column("middle_name")]
         public string? MiddleName { get; set; }
+
+        [Column("force_reset")]
+        public bool ForceReset { get; set; }
+
+        [Column("failed_count")]
+        public int FailedCount { get; set; }
+
+        [Column("lockout_until")]
+        public DateTimeOffset? LockoutUntil { get; set; }
     }
 }

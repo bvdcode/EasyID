@@ -6,10 +6,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { MetricsService } from "../services";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { MetricsService } from "../services";
+import { authStore } from "../stores/authStore";
+import React, { useEffect, useState } from "react";
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
@@ -24,14 +25,30 @@ const LoginPage: React.FC = () => {
       .catch(() => setHasUsers(true)); // if API fails, assume users exist to avoid misleading message
   }, []);
 
-  const handleLogin = () => {
-    if (!password) {
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLogin = async () => {
+    setError(null);
+    if (!username || !password) {
       alert(t("loginPage.emptyPasswordError"));
       return;
     }
-    // For now, keep existing behavior: navigate to vault with password as state
-    // Backend auth endpoints are wired but not used yet because Vault API expects password
-    navigate("/vault", { state: { password } });
+    setSubmitting(true);
+    try {
+      await authStore.getState().login(username, password);
+      navigate("/app", { replace: true });
+    } catch (e: unknown) {
+      const status =
+        typeof e === "object" && e !== null && "response" in e
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (e as Record<string, any>).response?.status
+          : undefined;
+      if (status === 401) setError("Invalid username or password");
+      else setError((e as Error)?.message || "Login failed");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -75,11 +92,12 @@ const LoginPage: React.FC = () => {
         {hasUsers === false && (
           <Alert severity="info">{t("loginPage.firstUserInfo")}</Alert>
         )}
+        {error && <Alert severity="error">{error}</Alert>}
         <Button
           variant="contained"
           color="primary"
           onClick={handleLogin}
-          disabled={!password}
+          disabled={!username || !password || submitting}
         >
           {t("loginPage.loginButton")}
         </Button>

@@ -1,3 +1,5 @@
+using FluentValidation;
+using EasyID.Server.Mappings;
 using EasyID.Server.Database;
 using EasyExtensions.AspNetCore.Extensions;
 using EasyExtensions.EntityFrameworkCore.Extensions;
@@ -13,11 +15,13 @@ namespace EasyID.Server
             var builder = WebApplication.CreateBuilder(args);
             string[] corsOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
                 ?? throw new ArgumentNullException(null, "Allowed origins cannot be null.");
-            builder.Services.AddJwt(builder.Configuration);
-            builder.Services.AddDefaultCorsWithOrigins(corsOrigins);
-            builder.Services.AddPostgresDbContext<AppDbContext>(builder.Configuration);
-            builder.Services.AddControllers();
-            builder.Services.AddHealthChecks();
+            builder.Services.AddJwt(builder.Configuration)
+                .AddAutoMapper(x => x.AddProfile<AppMappingProfile>())
+                .AddValidatorsFromAssemblyContaining<Program>()
+                .AddDefaultCorsWithOrigins(corsOrigins)
+                .AddPostgresDbContext<AppDbContext>(builder.Configuration)
+                .AddControllers().Services
+                .AddHealthChecks();
 
             var app = builder.Build();
             app.UseCors().UseDefaultFiles();

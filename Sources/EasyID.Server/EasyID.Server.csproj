@@ -9,10 +9,12 @@
 		<SpaProxyServerUrl>https://localhost:51031</SpaProxyServerUrl>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="15.0.1" />
 		<PackageReference Include="EasyExtensions.AspNetCore" Version="1.0.34" />
 		<PackageReference Include="EasyExtensions.AspNetCore.Authorization" Version="1.0.34" />
 		<PackageReference Include="EasyExtensions.EntityFrameworkCore" Version="1.0.34" />
 		<PackageReference Include="EasyExtensions.EntityFrameworkCore.Npgsql" Version="1.0.34" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="9.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.8">
 			<PrivateAssets>all</PrivateAssets>

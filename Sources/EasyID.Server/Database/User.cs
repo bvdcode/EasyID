@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;
 
 namespace EasyID.Server.Database
 {
     [Table("users")]
+    [Index(nameof(Username), IsUnique = true)]
+    [Index(nameof(Email), IsUnique = true)]
     public class User : BaseEntity<Guid>
     {
         [Column("username")]
@@ -11,6 +14,9 @@ namespace EasyID.Server.Database
 
         [Column("email")]
         public string Email { get; set; } = string.Empty;
+
+        [Column("phone_number")]
+        public long? PhoneNumber { get; set; }
 
         [Column("password_phc")]
         public string? PasswordPhc { get; set; }

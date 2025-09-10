@@ -21,7 +21,8 @@ namespace EasyID.Server
                 .AddDefaultCorsWithOrigins(corsOrigins)
                 .AddPostgresDbContext<AppDbContext>(builder.Configuration)
                 .AddControllers().Services
-                .AddHealthChecks();
+                .AddHealthChecks().Services
+                .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<Program>());
 
             var app = builder.Build();
             app.UseCors().UseDefaultFiles();

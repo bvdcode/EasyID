@@ -7,12 +7,13 @@ using EasyID.Server.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EasyExtensions.AspNetCore.Authorization.Services;
+using MediatR;
 
 namespace EasyID.Server.Controllers
 {
     [ApiController]
     public class AuthController(ILogger<AuthController> _logger, AppDbContext _dbContext,
-        ITokenProvider _tokenProvider, IConfiguration _configuration) : ControllerBase
+        ITokenProvider _tokenProvider, IConfiguration _configuration, IMediator _mediator) : ControllerBase
     {
         private readonly string _pepper = _configuration.GetValue<string>("Encryption:Pepper")
             ?? throw new ArgumentNullException("Encryption:Pepper", "Encryption key cannot be null.");
@@ -23,10 +24,11 @@ namespace EasyID.Server.Controllers
             bool hasUsers = await _dbContext.Users.AnyAsync();
             if (!hasUsers)
             {
-                InitializeInstanceRequest initRequest = new()
+                InitializeInstanceQuery initQuery = new()
                 {
                     FirstLoginRequest = request
                 };
+                await _mediator.Send(initQuery);
             }
 
             var foundUser = await _dbContext.Users

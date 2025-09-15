@@ -1,6 +1,7 @@
 using FluentValidation;
 using EasyID.Server.Mappings;
 using EasyID.Server.Database;
+using EasyID.Server.Extensions;
 using EasyExtensions.AspNetCore.Extensions;
 using EasyExtensions.EntityFrameworkCore.Extensions;
 using EasyExtensions.AspNetCore.Authorization.Extensions;
@@ -16,6 +17,8 @@ namespace EasyID.Server
             string[] corsOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
                 ?? throw new ArgumentNullException(null, "Allowed origins cannot be null.");
             builder.Services.AddJwt(builder.Configuration)
+                .
+                AddPbkdf2PasswordHashService(builder.Configuration)
                 .AddAutoMapper(x => x.AddProfile<AppMappingProfile>())
                 .AddValidatorsFromAssemblyContaining<Program>()
                 .AddDefaultCorsWithOrigins(corsOrigins)

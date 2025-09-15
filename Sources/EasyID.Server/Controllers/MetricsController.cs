@@ -6,10 +6,15 @@ namespace EasyID.Server.Controllers
 {
     public class MetricsController(AppDbContext _dbContext) : ControllerBase
     {
-        [HttpGet(Routes.Metrics + "/has-users")]
-        public Task<bool> HasUsers()
+        [HttpGet(Routes.Metrics)]
+        public async Task<IActionResult> GetServerMetrics()
         {
-            return _dbContext.Users.AnyAsync();
+            bool hasUsers = await _dbContext.Users.AnyAsync();
+            return Ok(new
+            {
+                hasUsers,
+                serverTime = DateTime.Now
+            });
         }
     }
 }

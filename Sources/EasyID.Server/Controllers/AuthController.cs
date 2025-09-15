@@ -15,6 +15,12 @@ namespace EasyID.Server.Controllers
     public class AuthController(ILogger<AuthController> _logger, AppDbContext _dbContext,
         ITokenProvider _tokenProvider, Pbkdf2PasswordHashService _hashService, IMediator _mediator) : ControllerBase
     {
+        [HttpPost(Routes.Auth + "/refresh")]
+        public IActionResult Refresh([FromBody] RefreshRequestDto request)
+        {
+            return Ok();
+        }
+
         [HttpPost(Routes.Auth + "/login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {

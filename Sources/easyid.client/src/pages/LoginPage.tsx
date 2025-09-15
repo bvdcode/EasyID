@@ -20,8 +20,12 @@ const LoginPage: React.FC = () => {
   const [hasUsers, setHasUsers] = useState<boolean | null>(null);
 
   useEffect(() => {
-    MetricsService.hasUsers()
-      .then(setHasUsers)
+    MetricsService.getMetrics()
+      .then((data) => {
+        if (data) {
+          setHasUsers(data.hasUsers);
+        }
+      })
       .catch(() => setHasUsers(true)); // if API fails, assume users exist to avoid misleading message
   }, []);
 

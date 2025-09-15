@@ -4,6 +4,7 @@ export interface UserDto {
   id: string;
   username: string;
   email: string;
+  avatarUrl?: string; // optional user avatar
 }
 
 export default class UsersService {
@@ -12,4 +13,3 @@ export default class UsersService {
     return res.data;
   }
 }
-

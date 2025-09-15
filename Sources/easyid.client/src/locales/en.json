@@ -11,7 +11,9 @@
   "settings": {
     "language": "Language",
     "darkMode": "Theme",
-    "logout": "Change encryption key"
+    "logout": "Change encryption key",
+    "switchToLight": "Switch to Light mode",
+    "switchToDark": "Switch to Dark mode"
   },
   "authReasons": {
     "unauthorized": "Session expired or unauthorized. Please login again."
@@ -20,5 +22,8 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "add": "Add"
+  },
+  "topBar": {
+    "logout": "Logout"
   }
 }

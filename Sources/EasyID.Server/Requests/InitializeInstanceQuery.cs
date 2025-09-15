@@ -64,7 +64,7 @@ namespace EasyID.Server.Requests
                 DisplayName = Constants.AppName + " Users",
                 Description = "Default users group with limited permissions.",
             };
-            await _dbContext.Groups.AddRangeAsync(new[] { adminGroup, userGroup });
+            await _dbContext.Groups.AddRangeAsync([adminGroup, userGroup]);
             await _dbContext.SaveChangesAsync();
             return [adminGroup, userGroup];
         }

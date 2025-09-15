@@ -37,6 +37,9 @@ namespace EasyID.Server.Database.Models
         [Column("failed_count")]
         public int FailedCount { get; set; }
 
+        [Column("avatar_webp_bytes")]
+        public byte[] AvatarWebPBytes { get; set; } = [];
+
         public virtual ICollection<GroupUser> UserGroups { get; set; } = [];
 
         public ClaimsPrincipal GetClaims()

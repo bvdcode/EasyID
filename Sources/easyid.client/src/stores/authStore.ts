@@ -91,6 +91,11 @@ export const authStore = create<AuthState>((set, get) => {
       window.clearTimeout(refreshTimer);
       refreshTimer = null;
     }
+    // Fire-and-forget backend logout (do not await)
+    const rt = get().refreshToken;
+    if (rt) {
+      AuthService.logout(rt).catch(() => {});
+    }
     set({ accessToken: null, refreshToken: null, expiresAt: null, isAuthenticated: false });
     persist({ accessToken: null, refreshToken: null, expiresAt: null });
   },

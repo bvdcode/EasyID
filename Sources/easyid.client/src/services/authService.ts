@@ -35,4 +35,14 @@ export default class AuthService {
     );
     return res.data;
   }
+
+  static async logout(refreshToken?: string): Promise<void> {
+    try {
+      await apiClient.delete(`/auth/logout`, {
+        params: { refreshToken },
+      });
+    } catch {
+      // swallow any error intentionally (fire-and-forget)
+    }
+  }
 }

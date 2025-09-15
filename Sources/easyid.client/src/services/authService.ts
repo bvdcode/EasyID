@@ -27,8 +27,12 @@ export default class AuthService {
     return res.data;
   }
 
-  static async refresh(): Promise<AuthTokens> {
-    const res = await apiClient.post<AuthTokens>("/auth/refresh");
+  static async refresh(refreshToken?: string): Promise<AuthTokens> {
+    const res = await apiClient.post<AuthTokens>(
+      "/auth/refresh",
+      { refreshToken },
+      { headers: { "x-no-auth": "true" } },
+    );
     return res.data;
   }
 }

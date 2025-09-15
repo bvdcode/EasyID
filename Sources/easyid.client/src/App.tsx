@@ -1,5 +1,6 @@
 import "./App.css";
 import ProfilePage from "./pages/ProfilePage";
+import NotFoundPage from "./pages/NotFoundPage";
 import "react-toastify/dist/ReactToastify.css";
 import { Box, CssBaseline } from "@mui/material";
 import { LoginPage, DashboardPage } from "./pages";
@@ -45,7 +46,7 @@ function App() {
                 <Route index element={<DashboardPage />} />
                 <Route path="profile" element={<ProfilePage />} />
               </Route>
-              <Route path="*" element={<Navigate to="/app" replace />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </BrowserRouter>
           <CssBaseline enableColorScheme={true} />

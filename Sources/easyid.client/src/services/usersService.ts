@@ -4,7 +4,6 @@ export interface UserDto {
   id: string;
   username: string;
   email: string;
-  avatarUrl?: string; // optional user avatar
 }
 
 export default class UsersService {
@@ -20,7 +19,7 @@ export default class UsersService {
   static async updateAvatar(file: File): Promise<void> {
     const form = new FormData();
     form.append("file", file);
-  await apiClient.put(`/users/me/avatar`, form, {
+    await apiClient.put(`/users/me/avatar`, form, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }

@@ -20,17 +20,14 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   variant = "circular",
 }) => {
   const user = userStore((s) => s.user);
-  const setUser = userStore((s) => s.setUser);
   const fetchUser = userStore((s) => s.fetchUser);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState(0);
 
-  const baseUrl = user ? user.avatarUrl || UsersService.avatarUrl(user.id) : "";
-  const src = user
-    ? `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}v=${version}`
-    : undefined;
+  const baseUrl = user ? UsersService.avatarUrl(user.id) : "";
+  const src = user ? `${baseUrl}?v=${version}` : undefined;
 
   const pick = () => fileRef.current?.click();
 
@@ -42,12 +39,8 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       setUploading(true);
       try {
         await UsersService.updateAvatar(file);
-        // Always refresh user to get updated avatarUrl (e.g., if backend sets a new signed URL)
-        const refreshed = await fetchUser();
-        if (!refreshed && user && !user.avatarUrl) {
-          // fallback optimistic update if refetch failed
-          setUser({ ...user, avatarUrl: UsersService.avatarUrl(user.id) });
-        }
+        // Refresh user (even though avatarUrl removed, may need future fields)
+        await fetchUser();
         setVersion((v) => v + 1); // cache-bust
       } catch (err) {
         setError((err as Error).message || "Upload failed");
@@ -56,7 +49,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         if (fileRef.current) fileRef.current.value = "";
       }
     },
-    [user, setUser, fetchUser],
+  [fetchUser],
   );
 
   if (!user) return null;

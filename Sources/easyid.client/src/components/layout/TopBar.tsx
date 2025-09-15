@@ -16,6 +16,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { useAppTheme } from "../../contexts/ThemeContext";
+import UsersService from "../../services/usersService";
 
 interface TopBarProps {
   title?: string;
@@ -72,7 +73,7 @@ const TopBar: React.FC<TopBarProps> = ({ title = "App", onLogout }) => {
                 sx={{ p: 0, border: "1px solid rgba(255,255,255,0.3)" }}
               >
                 <Avatar
-                  src={user.avatarUrl}
+                  src={UsersService.avatarUrl(user.id) + "?v=" + user.id}
                   alt={user.username}
                   sx={{ width: 24, height: 24, fontSize: 14 }}
                 >

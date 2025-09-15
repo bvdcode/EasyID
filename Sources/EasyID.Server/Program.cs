@@ -34,18 +34,15 @@ namespace EasyID.Server
             app.UseAuthorization();
             app.MapControllers();
             app.MapFallbackToFile("/index.html");
-            app.ApplyMigrations<AppDbContext>();
+            //app.ApplyMigrations<AppDbContext>();
             app.MapHealthChecks("/api/{version}/health");
 
             var scope = app.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             bool deleted = dbContext.Database.EnsureDeleted();
             Console.WriteLine(deleted ? "Database deleted" : "!!! Database not deleted !!!");
-            if (deleted)
-            {
-                dbContext.Database.EnsureCreated();
-                Console.WriteLine("Database created");
-            }
+            dbContext.Database.EnsureCreated();
+            Console.WriteLine("Database created");
 
             app.Run();
         }

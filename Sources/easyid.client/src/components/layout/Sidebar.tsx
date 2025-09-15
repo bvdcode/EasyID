@@ -24,17 +24,35 @@ const Sidebar: React.FC<SidebarProps> = ({ items, onNavigate }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const sorted = [...items].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+  // Determine active item: prefer exact match; otherwise longest prefix match
+  const path = location.pathname;
+  let activeKey: string | null = null;
+  // exact
+  const exact = sorted.find((i) => i.route === path);
+  if (exact) activeKey = exact.key;
+  else {
+    // longest prefix (skip root collisions like '/app' vs '/app/profile/edit')
+    let bestLen = -1;
+    for (const i of sorted) {
+      if (path.startsWith(i.route) && i.route.length > bestLen) {
+        bestLen = i.route.length;
+        activeKey = i.key;
+      }
+    }
+  }
+
   return (
     <List dense sx={{ width: "100%" }}>
       {sorted.map((it) => {
-        const selected = location.pathname.startsWith(it.route);
+        const selected = it.key === activeKey;
         return (
           <ListItemButton
             key={it.key}
             selected={selected}
             onClick={() => {
               if (onNavigate) onNavigate(it.route);
-              navigate(it.route);
+              if (path !== it.route) navigate(it.route);
             }}
           >
             {it.icon && <ListItemIcon>{it.icon}</ListItemIcon>}

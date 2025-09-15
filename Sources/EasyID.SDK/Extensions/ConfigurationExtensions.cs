@@ -10,6 +10,11 @@ namespace EasyID.SDK.Extensions
     /// </summary>
     public static class ConfigurationExtensions
     {
+        /// <summary>
+        /// Integrates EasyID authentication services into the service collection and ASP.NET Core pipeline as well.
+        /// </summary>
+        /// <param name="_services"></param>
+        /// <returns></returns>
         public static IServiceProvider AddEasyAuth(this IServiceProvider _services)
         {
             return _services;

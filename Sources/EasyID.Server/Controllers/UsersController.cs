@@ -11,7 +11,7 @@ namespace EasyID.Server.Controllers
         {
             return Ok(new
             {
-                Name = User.Identity?.Name,
+                User.Identity?.Name,
             });
         }
     }

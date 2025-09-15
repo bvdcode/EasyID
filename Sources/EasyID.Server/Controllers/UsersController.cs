@@ -44,6 +44,7 @@ namespace EasyID.Server.Controllers
             }
             using var memoryStream = new MemoryStream();
             await file.CopyToAsync(memoryStream);
+            memoryStream.Position = default;
             using var loadedImage = await Image.LoadAsync<Rgba32>(memoryStream);
             int avatarSizeLimit = _configuration.GetValue("AvatarSizeLimit", 1024);
             loadedImage.Mutate(x => x.Resize(avatarSizeLimit, 0));

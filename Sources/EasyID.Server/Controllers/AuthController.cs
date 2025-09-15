@@ -9,9 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EasyID.Server.Database.Models;
 using EasyExtensions.AspNetCore.Extensions;
-using EasyExtensions.AspNetCore.Authorization.Services;
 using EasyExtensions.EntityFrameworkCore.Exceptions;
-using System.Threading.Tasks;
+using EasyExtensions.AspNetCore.Authorization.Services;
 
 namespace EasyID.Server.Controllers
 {
@@ -19,6 +18,20 @@ namespace EasyID.Server.Controllers
     public class AuthController(ILogger<AuthController> _logger, AppDbContext _dbContext,
         ITokenProvider _tokenProvider, Pbkdf2PasswordHashService _hashService, IMediator _mediator) : ControllerBase
     {
+        [HttpDelete(Routes.Auth + "/logout")]
+        public async Task<IActionResult> Logout([FromQuery] string refreshToken)
+        {
+            var foundToken = _dbContext.RefreshTokens
+                .Where(rt => rt.Token == refreshToken)
+                .FirstOrDefault();
+            if (foundToken != null)
+            {
+                _dbContext.RefreshTokens.Remove(foundToken);
+                await _dbContext.SaveChangesAsync();
+            }
+            return NoContent();
+        }
+
         [HttpPost(Routes.Auth + "/refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequestDto request)
         {

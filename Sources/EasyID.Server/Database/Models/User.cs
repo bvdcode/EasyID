@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;
-using EasyExtensions.AspNetCore.Authorization.Builders;
 
-namespace EasyID.Server.Database
+namespace EasyID.Server.Database.Models
 {
     [Table("users")]
     [Index(nameof(Username), IsUnique = true)]
@@ -37,9 +37,19 @@ namespace EasyID.Server.Database
         [Column("failed_count")]
         public int FailedCount { get; set; }
 
-        internal Func<ClaimBuilder, ClaimBuilder>? GetClaims()
+        public ClaimsPrincipal GetClaims()
         {
-            throw new NotImplementedException();
+            ClaimsPrincipal claims = new();
+            claims.AddIdentity(new ClaimsIdentity(
+            [
+                new Claim("sub", Id.ToString()),
+                new Claim("username", Username),
+                new Claim("email", Email),
+                new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
+                new Claim(ClaimTypes.Name, Username),
+                new Claim(ClaimTypes.Email, Email),
+            ], "EasyID"));
+            return claims;
         }
     }
 }

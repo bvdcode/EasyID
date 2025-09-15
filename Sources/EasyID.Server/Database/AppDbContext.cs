@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using EasyID.Server.Database.Models;
 using EasyExtensions.EntityFrameworkCore.Database;
 
 namespace EasyID.Server.Database

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;
 
-namespace EasyID.Server.Database
+namespace EasyID.Server.Database.Models
 {
     [Table("refresh_tokens")]
     [Index(nameof(Token), IsUnique = true)]

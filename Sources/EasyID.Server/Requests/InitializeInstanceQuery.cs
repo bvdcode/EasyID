@@ -2,6 +2,7 @@
 using EasyID.Server.Database;
 using EasyExtensions.Services;
 using EasyID.Server.Models.Dto;
+using EasyID.Server.Database.Models;
 
 namespace EasyID.Server.Requests
 {

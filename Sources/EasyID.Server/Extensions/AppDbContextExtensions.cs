@@ -1,6 +1,7 @@
 ﻿using EasyExtensions;
 using EasyID.Server.Database;
 using System.Security.Claims;
+using EasyID.Server.Database.Models;
 
 namespace EasyID.Server.Extensions
 {

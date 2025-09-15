@@ -3,6 +3,7 @@ using EasyID.Server.Database;
 using EasyID.Server.Extensions;
 using EasyID.Server.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
+using EasyID.Server.Database.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace EasyID.Server.Controllers

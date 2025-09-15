@@ -1,15 +1,15 @@
 using MediatR;
+using System.Net;
 using EasyID.Server.Database;
-using System.Security.Claims;
 using EasyExtensions.Helpers;
 using EasyID.Server.Requests;
 using EasyExtensions.Services;
 using EasyID.Server.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EasyExtensions.AspNetCore.Authorization.Services;
+using EasyID.Server.Database.Models;
 using EasyExtensions.AspNetCore.Extensions;
-using System.Net;
+using EasyExtensions.AspNetCore.Authorization.Services;
 
 namespace EasyID.Server.Controllers
 {
@@ -62,7 +62,7 @@ namespace EasyID.Server.Controllers
                 _logger.LogInformation("Upgraded password hash for user {Username}", request.Username);
             }
 
-            string accessToken = _tokenProvider.CreateToken(foundUser.GetClaims());
+            string accessToken = _tokenProvider.CreateToken(x => x.AddRange(foundUser.GetClaims().Claims));
             RefreshToken refreshToken = new()
             {
                 City = "local",

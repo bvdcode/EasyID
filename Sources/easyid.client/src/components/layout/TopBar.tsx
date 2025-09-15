@@ -1,8 +1,18 @@
+import {
+  AppBar,
+  Box,
+  IconButton,
+  Toolbar,
+  Typography,
+  Tooltip,
+} from "@mui/material";
 import React from "react";
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { authStore } from "../../stores/authStore";
 import { userStore } from "../../stores/userStore";
+import LogoutIcon from "@mui/icons-material/Logout";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { useAppTheme } from "../../contexts/ThemeContext";
 
 interface TopBarProps {
   title?: string;
@@ -18,6 +28,8 @@ const TopBar: React.FC<TopBarProps> = ({ title = "App", onLogout }) => {
     if (onLogout) onLogout();
   };
 
+  const { isDarkMode, toggleTheme } = useAppTheme();
+
   return (
     <AppBar position="static" color="primary" elevation={1}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -30,6 +42,19 @@ const TopBar: React.FC<TopBarProps> = ({ title = "App", onLogout }) => {
               {user.username} ({user.email})
             </Typography>
           )}
+          <Tooltip
+            title={
+              isDarkMode ? "Switch to light theme" : "Switch to dark theme"
+            }
+          >
+            <IconButton color="inherit" onClick={toggleTheme} size="small">
+              {isDarkMode ? (
+                <LightModeIcon fontSize="small" />
+              ) : (
+                <DarkModeIcon fontSize="small" />
+              )}
+            </IconButton>
+          </Tooltip>
           <IconButton color="inherit" onClick={handleLogout} size="small">
             <LogoutIcon fontSize="small" />
           </IconButton>

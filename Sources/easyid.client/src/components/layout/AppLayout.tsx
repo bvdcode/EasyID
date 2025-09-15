@@ -1,9 +1,9 @@
+import TopBar from "./TopBar";
 import React, { useEffect } from "react";
+import Sidebar, { SidebarItem } from "./Sidebar";
+import { userStore } from "../../stores/userStore";
 import { Box, Divider, Paper } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
-import Sidebar, { SidebarItem } from "./Sidebar";
-import TopBar from "./TopBar";
-import { userStore } from "../../stores/userStore";
 
 interface AppLayoutProps {
   sidebarItems: SidebarItem[];

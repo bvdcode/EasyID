@@ -41,11 +41,6 @@ namespace EasyID.Server.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("display_name");
-
                     b.Property<bool>("IsSystem")
                         .HasColumnType("boolean")
                         .HasColumnName("is_system");
@@ -61,39 +56,7 @@ namespace EasyID.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("groups");
-                });
-
-            modelBuilder.Entity("EasyID.Server.Database.Models.GroupUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("group_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("group_users");
+                    b.ToTable("groups", (string)null);
                 });
 
             modelBuilder.Entity("EasyID.Server.Database.Models.RefreshToken", b =>
@@ -147,7 +110,7 @@ namespace EasyID.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("refresh_tokens");
+                    b.ToTable("refresh_tokens", (string)null);
                 });
 
             modelBuilder.Entity("EasyID.Server.Database.Models.User", b =>
@@ -212,41 +175,7 @@ namespace EasyID.Server.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("users");
-                });
-
-            modelBuilder.Entity("GroupUser", b =>
-                {
-                    b.Property<Guid>("GroupsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("GroupsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("GroupUser");
-                });
-
-            modelBuilder.Entity("EasyID.Server.Database.Models.GroupUser", b =>
-                {
-                    b.HasOne("EasyID.Server.Database.Models.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EasyID.Server.Database.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("EasyID.Server.Database.Models.RefreshToken", b =>
@@ -258,21 +187,6 @@ namespace EasyID.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GroupUser", b =>
-                {
-                    b.HasOne("EasyID.Server.Database.Models.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EasyID.Server.Database.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

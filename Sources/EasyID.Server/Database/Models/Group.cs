@@ -18,6 +18,6 @@ namespace EasyID.Server.Database.Models
         [Column("is_system")]
         public bool IsSystem { get; set; }
 
-        public virtual ICollection<User> Users { get; set; } = [];
+        public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
     }
 }

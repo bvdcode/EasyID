@@ -1,2 +1,2 @@
 export { default as LoginPage } from "./LoginPage";
-export { default as AppShell } from "./AppShell";
+export { default as VaultPage } from "./VaultPage";

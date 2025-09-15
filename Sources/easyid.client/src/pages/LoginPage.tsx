@@ -10,6 +10,7 @@ import { MetricsService } from "../services";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { authStore } from "../stores/authStore";
+import { userStore } from "../stores/userStore";
 import React, { useEffect, useState } from "react";
 
 const LoginPage: React.FC = () => {
@@ -40,8 +41,9 @@ const LoginPage: React.FC = () => {
     }
     setSubmitting(true);
     try {
-      await authStore.getState().login(username, password);
-      navigate("/app", { replace: true });
+  await authStore.getState().login(username, password);
+  await userStore.getState().fetchUser();
+  navigate("/app", { replace: true });
     } catch (e: unknown) {
       const status =
         typeof e === "object" && e !== null && "response" in e

@@ -9,7 +9,7 @@ import { t } from "i18next";
 import { VaultData } from "../types";
 import { toast } from "react-toastify";
 import { VaultEntryEditForm } from ".";
-import { VaultApiService } from "../services";
+import VaultApiService from "../services/vaultApi";
 import { confirm } from "material-ui-confirm";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
@@ -79,7 +79,7 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
         toast.error(
           t("vaultList.fetchError", {
             error: err instanceof Error ? err.message : String(err),
-          })
+          }),
         );
       } finally {
         setLoading(false);
@@ -95,7 +95,7 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
     let result = "";
     for (let i = 0; i < length; i++) {
       result += characters.charAt(
-        Math.floor(Math.random() * characters.length)
+        Math.floor(Math.random() * characters.length),
       );
     }
     return result;
@@ -130,7 +130,7 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
       toast.error(
         t("vaultList.saveError", {
           error: err instanceof Error ? err.message : String(err),
-        })
+        }),
       );
     } finally {
       setLoading(false);
@@ -153,7 +153,7 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
           (existingItem) =>
             existingItem.keyId !== updatedData.keyId &&
             existingItem.appName.toLowerCase() ===
-              updatedData.appName.toLowerCase()
+              updatedData.appName.toLowerCase(),
         );
 
         if (isDuplicateName) {
@@ -167,14 +167,14 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
               (existingItem) =>
                 existingItem.keyId !== updatedData.keyId &&
                 existingItem.appName.toLowerCase() ===
-                  updatedData.appName.toLowerCase()
+                  updatedData.appName.toLowerCase(),
             );
 
             counter++;
           }
 
           toast.info(
-            t("vaultList.nameAdjusted", { newName: updatedData.appName })
+            t("vaultList.nameAdjusted", { newName: updatedData.appName }),
           );
         }
 
@@ -192,8 +192,8 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
 
         setVaultData((prevData) =>
           prevData.map((existingItem) =>
-            existingItem.keyId === finalData.keyId ? finalData : existingItem
-          )
+            existingItem.keyId === finalData.keyId ? finalData : existingItem,
+          ),
         );
 
         const updatedJson = JSON.stringify(updatedData);
@@ -220,7 +220,7 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
     }).then((result) => {
       if (result.confirmed) {
         setVaultData((prevData) =>
-          prevData.filter((i) => i.keyId !== item.keyId)
+          prevData.filter((i) => i.keyId !== item.keyId),
         );
         toast.success(t("vaultList.deleteSuccess"));
         setChanged(true);

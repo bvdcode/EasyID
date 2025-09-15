@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using EasyID.Server.Database.Models;
 using EasyExtensions.AspNetCore.Extensions;
 using EasyExtensions.AspNetCore.Authorization.Services;
+using EasyExtensions.EntityFrameworkCore.Exceptions;
+using System.Threading.Tasks;
 
 namespace EasyID.Server.Controllers
 {
@@ -18,9 +20,22 @@ namespace EasyID.Server.Controllers
         ITokenProvider _tokenProvider, Pbkdf2PasswordHashService _hashService, IMediator _mediator) : ControllerBase
     {
         [HttpPost(Routes.Auth + "/refresh")]
-        public IActionResult Refresh([FromBody] RefreshRequestDto request)
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequestDto request)
         {
-            return Ok();
+            var foundToken = _dbContext.RefreshTokens
+                .Where(rt => rt.Token == request.RefreshToken)
+                .FirstOrDefault() ?? throw new EntityNotFoundException(nameof(RefreshToken));
+            foundToken.Token = StringHelpers.CreatePseudoRandomString(64);
+            foundToken.IpAddress = IPAddress.Parse(Request.GetRemoteAddress());
+            foundToken.UserAgent = Request.Headers.UserAgent.ToString();
+            await _dbContext.SaveChangesAsync();
+
+            string accessToken = _tokenProvider.CreateToken(x => x.AddRange(foundToken.User.GetClaims().Claims));
+            return Ok(new
+            {
+                AccessToken = accessToken,
+                RefreshToken = foundToken.Token,
+            });
         }
 
         [HttpPost(Routes.Auth + "/login")]

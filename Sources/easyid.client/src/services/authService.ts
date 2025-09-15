@@ -4,6 +4,12 @@ export interface AuthTokens {
   accessToken: string;
   refreshToken?: string;
   expiresIn?: number; // seconds
+  // Optionally backend may include user snapshot
+  user?: {
+    id: string;
+    username: string;
+    email: string;
+  };
 }
 
 export default class AuthService {

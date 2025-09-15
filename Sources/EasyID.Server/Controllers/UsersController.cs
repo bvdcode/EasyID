@@ -4,6 +4,7 @@ using EasyID.Server.Database;
 using EasyID.Server.Extensions;
 using EasyID.Server.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
+using EasyExtensions.Abstractions;
 using EasyID.Server.Database.Models;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -11,7 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EasyID.Server.Controllers
 {
-    public class UsersController(AppDbContext _dbContext, IConfiguration _configuration) : ControllerBase
+    public class UsersController(AppDbContext _dbContext, IConfiguration _configuration,
+        IPasswordHashService _hashService) : ControllerBase
     {
         [Authorize]
         [HttpGet(Routes.Users + "/me")]
@@ -31,6 +33,31 @@ namespace EasyID.Server.Controllers
                 return NotFound();
             }
             return File(user.AvatarWebPBytes, "image/webp");
+        }
+
+        [Authorize]
+        [HttpPost(Routes.Users + "/me")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserRequestDto request)
+        {
+            User user = await _dbContext.GetUserAsync(User);
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.MiddleName = request.MiddleName;
+            if (!string.IsNullOrWhiteSpace(request.Username))
+            {
+                user.Username = request.Username;
+            }
+            if (!string.IsNullOrWhiteSpace(request.OldPassword) && !string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                if (!_hashService.Verify(request.OldPassword, user.PasswordPhc, out _))
+                {
+                    return BadRequest("Old password is incorrect.");
+                }
+                user.PasswordPhc = _hashService.Hash(request.NewPassword);
+                user.PasswordVersion = _hashService.PasswordHashVersion;
+            }
+            await _dbContext.SaveChangesAsync();
+            return NoContent();
         }
 
         [Authorize]

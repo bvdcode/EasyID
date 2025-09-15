@@ -1,13 +1,13 @@
 using MediatR;
 using System.Net;
-using EasyID.Server.Database;
 using EasyExtensions.Helpers;
+using EasyID.Server.Database;
 using EasyID.Server.Requests;
-using EasyExtensions.Services;
 using EasyID.Server.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using EasyExtensions.Abstractions;
 using EasyID.Server.Database.Models;
+using Microsoft.EntityFrameworkCore;
 using EasyExtensions.AspNetCore.Extensions;
 using EasyExtensions.EntityFrameworkCore.Exceptions;
 using EasyExtensions.AspNetCore.Authorization.Services;
@@ -16,7 +16,7 @@ namespace EasyID.Server.Controllers
 {
     [ApiController]
     public class AuthController(ILogger<AuthController> _logger, AppDbContext _dbContext,
-        ITokenProvider _tokenProvider, Pbkdf2PasswordHashService _hashService, IMediator _mediator) : ControllerBase
+        ITokenProvider _tokenProvider, IPasswordHashService _hashService, IMediator _mediator) : ControllerBase
     {
         [HttpDelete(Routes.Auth + "/logout")]
         public async Task<IActionResult> Logout([FromQuery] string refreshToken)

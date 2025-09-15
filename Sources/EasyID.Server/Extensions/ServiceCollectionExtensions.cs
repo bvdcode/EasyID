@@ -1,4 +1,5 @@
 ﻿using EasyExtensions.Services;
+using EasyExtensions.Abstractions;
 
 namespace EasyID.Server.Extensions
 {
@@ -13,7 +14,7 @@ namespace EasyID.Server.Extensions
             int passwordVersion = configuration.GetValue(passwordVersionKey, 1);
             ArgumentException.ThrowIfNullOrWhiteSpace(pepper, pepperKey);
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(passwordVersion, passwordVersionKey);
-            return services.AddSingleton(new Pbkdf2PasswordHashService(pepper, passwordVersion));
+            return services.AddSingleton<IPasswordHashService>(new Pbkdf2PasswordHashService(pepper, passwordVersion));
         }
     }
 }

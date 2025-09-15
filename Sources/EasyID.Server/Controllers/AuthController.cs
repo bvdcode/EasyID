@@ -8,6 +8,8 @@ using EasyID.Server.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EasyExtensions.AspNetCore.Authorization.Services;
+using EasyExtensions.AspNetCore.Extensions;
+using System.Net;
 
 namespace EasyID.Server.Controllers
 {
@@ -63,8 +65,12 @@ namespace EasyID.Server.Controllers
             string accessToken = _tokenProvider.CreateToken(foundUser.GetClaims());
             RefreshToken refreshToken = new()
             {
+                City = "local",
+                Country = "local",
                 UserId = foundUser.Id,
+                UserAgent = Request.Headers.UserAgent.ToString(),
                 Token = StringHelpers.CreatePseudoRandomString(64),
+                IpAddress = IPAddress.Parse(Request.GetRemoteAddress()),
             };
             await _dbContext.RefreshTokens.AddAsync(refreshToken);
             await _dbContext.SaveChangesAsync();

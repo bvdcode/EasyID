@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;
+using EasyExtensions.AspNetCore.Authorization.Builders;
 
 namespace EasyID.Server.Database
 {
@@ -35,5 +36,10 @@ namespace EasyID.Server.Database
 
         [Column("failed_count")]
         public int FailedCount { get; set; }
+
+        internal Func<ClaimBuilder, ClaimBuilder>? GetClaims()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

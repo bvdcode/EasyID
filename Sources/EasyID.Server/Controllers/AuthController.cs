@@ -60,13 +60,18 @@ namespace EasyID.Server.Controllers
                 _logger.LogInformation("Upgraded password hash for user {Username}", request.Username);
             }
 
-            string accessToken = _tokenProvider.CreateToken(x => x.Add(new Claim("sub", "test")));
-            string refreshToken = StringHelpers.CreatePseudoRandomString(16);
+            string accessToken = _tokenProvider.CreateToken(foundUser.GetClaims());
+            RefreshToken refreshToken = new()
+            {
+                UserId = foundUser.Id,
+                Token = StringHelpers.CreatePseudoRandomString(64),
+            };
+            await _dbContext.RefreshTokens.AddAsync(refreshToken);
+            await _dbContext.SaveChangesAsync();
             return Ok(new
             {
-                ExpiresIn = 3600,
                 AccessToken = accessToken,
-                RefreshToken = refreshToken,
+                RefreshToken = refreshToken.Token,
             });
         }
     }

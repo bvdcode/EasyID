@@ -1,18 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using EasyID.Server.Database;
+using EasyID.Server.Extensions;
+using EasyID.Server.Models.Dto;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 namespace EasyID.Server.Controllers
 {
-    public class UsersController : ControllerBase
+    public class UsersController(AppDbContext _dbContext) : ControllerBase
     {
         [Authorize]
         [HttpGet(Routes.Users + "/me")]
-        public IActionResult Me()
+        public async Task<UserDto> Me()
         {
-            return Ok(new
-            {
-                User.Identity?.Name,
-            });
+            User user = await _dbContext.GetUserAsync(User);
+            return user.Adapt<UserDto>();
         }
     }
 }

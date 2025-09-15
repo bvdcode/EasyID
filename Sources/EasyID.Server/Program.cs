@@ -17,6 +17,7 @@ namespace EasyID.Server
             string[] corsOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
                 ?? throw new ArgumentNullException(null, "Allowed origins cannot be null.");
             builder.Services.AddJwt(builder.Configuration)
+                .AddExceptionHandler()
                 .AddPbkdf2PasswordHashService(builder.Configuration)
                 .AddAutoMapper(x => x.AddProfile<AppMappingProfile>())
                 .AddValidatorsFromAssemblyContaining<Program>()

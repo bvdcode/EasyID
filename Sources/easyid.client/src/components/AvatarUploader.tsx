@@ -27,7 +27,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   const [version, setVersion] = useState(0);
 
   const baseUrl = user ? UsersService.avatarUrl(user.id) : "";
-  const src = user ? `${baseUrl}?v=${version}` : undefined;
+  const src = user ? `${baseUrl}?v=${version}` : undefined; // version busts browser cache after upload
 
   const pick = () => fileRef.current?.click();
 
@@ -49,7 +49,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         if (fileRef.current) fileRef.current.value = "";
       }
     },
-  [fetchUser],
+    [fetchUser],
   );
 
   if (!user) return null;

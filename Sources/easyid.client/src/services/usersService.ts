@@ -1,4 +1,5 @@
 import apiClient from "../api/apiClient";
+import { API_BASE_URL } from "../api/config";
 
 export interface UserDto {
   id: string;
@@ -12,8 +13,8 @@ export default class UsersService {
     return res.data;
   }
 
-  static avatarUrl(userId: string, format: "webp" | "png" = "webp"): string {
-    return `/api/v1/users/${userId}/avatar.${format}`;
+  static avatarUrl(userId: string): string {
+    return `${API_BASE_URL}/users/${userId}/avatar.webp`;
   }
 
   static async updateAvatar(file: File): Promise<void> {

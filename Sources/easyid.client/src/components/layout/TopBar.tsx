@@ -73,7 +73,7 @@ const TopBar: React.FC<TopBarProps> = ({ title = "App", onLogout }) => {
                 sx={{ p: 0, border: "1px solid rgba(255,255,255,0.3)" }}
               >
                 <Avatar
-                  src={UsersService.avatarUrl(user.id) + "?v=" + user.id}
+                  src={UsersService.avatarUrl(user.id) + `?v=${Date.now()}`}
                   alt={user.username}
                   sx={{ width: 24, height: 24, fontSize: 14 }}
                 >

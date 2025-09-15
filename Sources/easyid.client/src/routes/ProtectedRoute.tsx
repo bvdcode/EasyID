@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import UsersService from "../services/usersService";
 import { userStore } from "../stores/userStore";
+import { Box, CircularProgress } from "@mui/material";
 
 const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({
   children,
@@ -26,8 +27,12 @@ const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({
     };
   }, []);
 
-  if (status === "checking") return null; // can add spinner later
-  if (status === "denied") return <Navigate to="/login" replace />;
+  if (status === "checking") return (
+    <Box display="flex" alignItems="center" justifyContent="center" height="100vh">
+      <CircularProgress />
+    </Box>
+  );
+  if (status === "denied") return <Navigate to="/login" replace state={{ reason: "unauthorized" }} />;
   return children;
 };
 

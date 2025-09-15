@@ -1,6 +1,6 @@
 import "./App.css";
 import { Box, CssBaseline } from "@mui/material";
-import { LoginPage, VaultPage } from "./pages";
+import { LoginPage, DashboardPage } from "./pages";
 import AppLayout from "./components/layout/AppLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,14 +24,13 @@ function App() {
                     <AppLayout
                       title="EasyID"
                       sidebarItems={[
-                        { key: "vault", label: "Vault", route: "/app/vault", order: 1 },
+                        { key: "dashboard", label: "Dashboard", route: "/app", order: 1 },
                       ]}
                     />
                   </ProtectedRoute>
                 }
               >
-                <Route path="vault" element={<VaultPage />} />
-                <Route index element={<Navigate to="vault" replace />} />
+                <Route index element={<DashboardPage />} />
               </Route>
               <Route path="*" element={<Navigate to="/app" replace />} />
             </Routes>

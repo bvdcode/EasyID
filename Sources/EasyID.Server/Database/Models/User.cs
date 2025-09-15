@@ -37,6 +37,8 @@ namespace EasyID.Server.Database.Models
         [Column("failed_count")]
         public int FailedCount { get; set; }
 
+        public virtual ICollection<Group> Groups { get; set; } = [];
+
         public ClaimsPrincipal GetClaims()
         {
             ClaimsPrincipal claims = new();

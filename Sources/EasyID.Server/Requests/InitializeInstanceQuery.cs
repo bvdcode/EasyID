@@ -15,6 +15,8 @@ namespace EasyID.Server.Requests
     {
         public async Task Handle(InitializeInstanceQuery request, CancellationToken cancellationToken)
         {
+            var groups = await CreateSystemGroupsAsync();
+
             ArgumentException.ThrowIfNullOrWhiteSpace(request.FirstLoginRequest.Username, nameof(request.FirstLoginRequest.Username));
             ArgumentException.ThrowIfNullOrWhiteSpace(request.FirstLoginRequest.Password, nameof(request.FirstLoginRequest.Password));
             string hashedPassword = _hashService.Hash(request.FirstLoginRequest.Password);
@@ -34,6 +36,37 @@ namespace EasyID.Server.Requests
             };
             await _dbContext.Users.AddAsync(user, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            foreach (var group in groups)
+            {
+                var userGroup = new GroupUser
+                {
+                    GroupId = group.Id,
+                    UserId = user.Id,
+                };
+                await _dbContext.GroupUsers.AddAsync(userGroup, cancellationToken);
+            }
+        }
+
+        private async Task<IEnumerable<Group>> CreateSystemGroupsAsync()
+        {
+            var adminGroup = new Group
+            {
+                IsSystem = true,
+                Name = Constants.AdminGroupName,
+                DisplayName = Constants.AppName + " Administrators",
+                Description = "System administrators group with full access to administration features.",
+            };
+            var userGroup = new Group
+            {
+                IsSystem = true,
+                Name = Constants.UsersGroupName,
+                DisplayName = Constants.AppName + " Users",
+                Description = "Default users group with limited permissions.",
+            };
+            await _dbContext.Groups.AddRangeAsync(new[] { adminGroup, userGroup });
+            await _dbContext.SaveChangesAsync();
+            return [adminGroup, userGroup];
         }
     }
 }

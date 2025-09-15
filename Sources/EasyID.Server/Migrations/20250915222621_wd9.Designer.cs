@@ -4,6 +4,7 @@ using System.Net;
 using EasyID.Server.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EasyID.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250915222621_wd9")]
+    partial class wd9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,11 +44,6 @@ namespace EasyID.Server.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("display_name");
-
                     b.Property<bool>("IsSystem")
                         .HasColumnType("boolean")
                         .HasColumnName("is_system");
@@ -62,38 +60,6 @@ namespace EasyID.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("groups");
-                });
-
-            modelBuilder.Entity("EasyID.Server.Database.Models.GroupUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
-
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("group_id");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("group_users");
                 });
 
             modelBuilder.Entity("EasyID.Server.Database.Models.RefreshToken", b =>
@@ -215,40 +181,6 @@ namespace EasyID.Server.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("GroupUser", b =>
-                {
-                    b.Property<Guid>("GroupsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("GroupsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("GroupUser");
-                });
-
-            modelBuilder.Entity("EasyID.Server.Database.Models.GroupUser", b =>
-                {
-                    b.HasOne("EasyID.Server.Database.Models.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EasyID.Server.Database.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("EasyID.Server.Database.Models.RefreshToken", b =>
                 {
                     b.HasOne("EasyID.Server.Database.Models.User", "User")
@@ -258,21 +190,6 @@ namespace EasyID.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GroupUser", b =>
-                {
-                    b.HasOne("EasyID.Server.Database.Models.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EasyID.Server.Database.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

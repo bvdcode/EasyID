@@ -1,13 +1,8 @@
-import {
-  Stack,
-  Avatar,
-  Button,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { Stack, Avatar, Button, Typography, CircularProgress } from "@mui/material";
 import { userStore } from "../stores/userStore";
 import UsersService from "../services/usersService";
 import React, { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AvatarUploaderProps {
   size?: number;
@@ -25,6 +20,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState(0);
+  const { t } = useTranslation();
 
   const baseUrl = user ? UsersService.avatarUrl(user.id) : "";
   const src = user ? `${baseUrl}?v=${version}` : undefined; // version busts browser cache after upload
@@ -43,13 +39,13 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         await fetchUser();
         setVersion((v) => v + 1); // cache-bust
       } catch (err) {
-        setError((err as Error).message || "Upload failed");
+  setError((err as Error).message || t("common.error", { defaultValue: "Error" }));
       } finally {
         setUploading(false);
         if (fileRef.current) fileRef.current.value = "";
       }
     },
-    [fetchUser],
+  [fetchUser, t],
   );
 
   if (!user) return null;
@@ -94,7 +90,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
             textAlign: "center",
           }}
         >
-          {uploading ? "Uploading..." : "Change avatar"}
+          {uploading ? t("profile.messages.uploading") : t("profile.messages.changeAvatar")}
         </span>
       </Button>
       {error && (

@@ -26,6 +26,31 @@
   "topBar": {
     "logout": "Logout"
   },
+  "profile": {
+    "title": "Profile",
+    "sections": {
+      "personal": "Personal Information",
+      "security": "Security"
+    },
+    "fields": {
+      "id": "ID",
+      "username": "Username",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "middleName": "Middle name",
+      "oldPassword": "Current password",
+      "newPassword": "New password",
+      "repeatNewPassword": "Repeat new password"
+    },
+    "actions": {
+      "save": "Save changes"
+    },
+    "messages": {
+      "noUser": "No user loaded",
+      "uploading": "Uploading...",
+      "changeAvatar": "Change avatar"
+    }
+  },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",

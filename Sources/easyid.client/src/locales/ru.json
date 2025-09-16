@@ -26,6 +26,31 @@
   "topBar": {
     "logout": "Выход"
   },
+  "profile": {
+    "title": "Профиль",
+    "sections": {
+      "personal": "Личная информация",
+      "security": "Безопасность"
+    },
+    "fields": {
+      "id": "ID",
+      "username": "Логин",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "middleName": "Отчество",
+      "oldPassword": "Текущий пароль",
+      "newPassword": "Новый пароль",
+      "repeatNewPassword": "Повторите новый пароль"
+    },
+    "actions": {
+      "save": "Сохранить"
+    },
+    "messages": {
+      "noUser": "Пользователь не загружен",
+      "uploading": "Загрузка...",
+      "changeAvatar": "Сменить аватар"
+    }
+  },
   "notFound": {
     "title": "Страница не найдена",
     "description": "Страница могла быть удалена, переименована или временно недоступна.",

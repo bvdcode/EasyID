@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using EasyID.Server.Database;
-using EasyExtensions.Services;
 using EasyID.Server.Models.Dto;
+using EasyExtensions.Abstractions;
 using EasyID.Server.Database.Models;
 
 namespace EasyID.Server.Requests
@@ -11,7 +11,7 @@ namespace EasyID.Server.Requests
         public LoginRequestDto FirstLoginRequest { get; set; } = null!;
     }
 
-    public class IInitializeInstanceQueryHandler(Pbkdf2PasswordHashService _hashService, AppDbContext _dbContext) : IRequestHandler<InitializeInstanceQuery>
+    public class IInitializeInstanceQueryHandler(IPasswordHashService _hashService, AppDbContext _dbContext) : IRequestHandler<InitializeInstanceQuery>
     {
         public async Task Handle(InitializeInstanceQuery request, CancellationToken cancellationToken)
         {

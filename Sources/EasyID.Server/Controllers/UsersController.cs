@@ -36,6 +36,24 @@ namespace EasyID.Server.Controllers
         }
 
         [Authorize]
+        [HttpPost(Routes.Users + "/me/password")]
+        public async Task<IActionResult> ChangePassword([FromBody] UpdateUserPasswordRequestDto request)
+        {
+            User user = await _dbContext.GetUserAsync(User);
+            if (!string.IsNullOrWhiteSpace(request.OldPassword) && !string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                if (!_hashService.Verify(request.OldPassword, user.PasswordPhc, out _))
+                {
+                    return BadRequest("Old password is incorrect.");
+                }
+                user.PasswordPhc = _hashService.Hash(request.NewPassword);
+                user.PasswordVersion = _hashService.PasswordHashVersion;
+            }
+            await _dbContext.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [Authorize]
         [HttpPost(Routes.Users + "/me")]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserRequestDto request)
         {

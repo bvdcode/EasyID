@@ -62,6 +62,32 @@
       "passwordsDoNotMatch": "Passwords do not match."
     }
   },
+  "components": {
+    "changePassword": {
+      "actions": {
+        "changePassword": "Change password",
+        "saving": "Saving..."
+      },
+      "messages": {
+        "passwordChanged": "Password successfully changed."
+      },
+      "validation": {
+        "oldPasswordRequired": "Current password is required.",
+        "newPasswordRequired": "New password is required.",
+        "newPasswordMinLength": "New password must be at least 8 characters.",
+        "passwordsDoNotMatch": "Passwords do not match."
+      }
+    },
+    "editPersonal": {
+      "actions": {
+        "savePersonal": "Save personal info",
+        "saving": "Saving..."
+      },
+      "messages": {
+        "personalSaved": "Personal information updated."
+      }
+    }
+  },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",

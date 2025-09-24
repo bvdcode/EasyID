@@ -47,8 +47,8 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({ username, i
 
   return (
     <Stack gap={2}>
-      {error && <Alert severity="error">{error}</Alert>}
-      {success && <Alert severity="success">{t("profile.messages.personalSaved")}</Alert>}
+  {error && <Alert severity="error">{error}</Alert>}
+  {success && <Alert severity="success">{t("components.editPersonal.messages.personalSaved")}</Alert>}
       <TextField
         label={t("profile.fields.username")}
         value={username}
@@ -86,7 +86,7 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({ username, i
       </Grid>
       <Box display="flex" justifyContent="flex-end">
         <Button variant="contained" onClick={handleSave} disabled={saving}>
-          {saving ? t("profile.actions.saving") : t("profile.actions.savePersonal")}
+          {saving ? t("components.editPersonal.actions.saving") : t("components.editPersonal.actions.savePersonal")}
         </Button>
       </Box>
     </Stack>

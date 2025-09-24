@@ -20,10 +20,10 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSuccess }) =>
 
   const errors = useMemo(() => {
     const e: { old?: string; next?: string; repeat?: string } = {};
-    if (!oldPassword) e.old = t("profile.validation.oldPasswordRequired");
-    if (!newPassword) e.next = t("profile.validation.newPasswordRequired");
-    else if (newPassword.length < 8) e.next = t("profile.validation.newPasswordMinLength");
-    if (repeatNewPassword !== newPassword) e.repeat = t("profile.validation.passwordsDoNotMatch");
+    if (!oldPassword) e.old = t("components.changePassword.validation.oldPasswordRequired");
+    if (!newPassword) e.next = t("components.changePassword.validation.newPasswordRequired");
+    else if (newPassword.length < 8) e.next = t("components.changePassword.validation.newPasswordMinLength");
+    if (repeatNewPassword !== newPassword) e.repeat = t("components.changePassword.validation.passwordsDoNotMatch");
     return e;
   }, [oldPassword, newPassword, repeatNewPassword, t]);
 
@@ -58,8 +58,8 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSuccess }) =>
 
   return (
     <Stack gap={2}>
-      {error && <Alert severity="error">{error}</Alert>}
-      {success && <Alert severity="success">{t("profile.messages.passwordChanged")}</Alert>}
+  {error && <Alert severity="error">{error}</Alert>}
+  {success && <Alert severity="success">{t("components.changePassword.messages.passwordChanged")}</Alert>}
       <TextField
         label={t("profile.fields.oldPassword")}
         type="password"
@@ -95,7 +95,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSuccess }) =>
       />
       <Box display="flex" justifyContent="flex-end">
         <Button variant="contained" onClick={handleSubmit} disabled={!canSubmit}>
-          {submitting ? t("profile.actions.saving") : t("profile.actions.changePassword")}
+          {submitting ? t("components.changePassword.actions.saving") : t("components.changePassword.actions.changePassword")}
         </Button>
       </Box>
     </Stack>

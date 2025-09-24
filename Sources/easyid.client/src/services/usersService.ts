@@ -31,4 +31,9 @@ export default class UsersService {
       newPassword,
     });
   }
+
+  static async updatePersonalInfo(data: { firstName?: string; lastName?: string; middleName?: string }): Promise<void> {
+    // Assuming a conventional endpoint; adjust to your actual API if different
+    await apiClient.put(`/users/me`, data);
+  }
 }

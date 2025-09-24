@@ -45,13 +45,15 @@
     "actions": {
       "save": "Сохранить",
       "changePassword": "Сменить пароль",
-      "saving": "Сохранение..."
+      "saving": "Сохранение...",
+      "savePersonal": "Сохранить данные"
     },
     "messages": {
       "noUser": "Пользователь не загружен",
       "uploading": "Загрузка...",
       "changeAvatar": "Сменить аватар",
-      "passwordChanged": "Пароль успешно изменён."
+      "passwordChanged": "Пароль успешно изменён.",
+      "personalSaved": "Личные данные обновлены."
     },
     "validation": {
       "oldPasswordRequired": "Текущий пароль обязателен.",

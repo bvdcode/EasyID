@@ -45,13 +45,15 @@
     "actions": {
       "save": "Save changes",
       "changePassword": "Change password",
-      "saving": "Saving..."
+      "saving": "Saving...",
+      "savePersonal": "Save personal info"
     },
     "messages": {
       "noUser": "No user loaded",
       "uploading": "Uploading...",
       "changeAvatar": "Change avatar",
-      "passwordChanged": "Password successfully changed."
+      "passwordChanged": "Password successfully changed.",
+      "personalSaved": "Personal information updated."
     },
     "validation": {
       "oldPasswordRequired": "Current password is required.",

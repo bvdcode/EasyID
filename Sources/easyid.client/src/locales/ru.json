@@ -43,12 +43,21 @@
       "repeatNewPassword": "Повторите новый пароль"
     },
     "actions": {
-      "save": "Сохранить"
+      "save": "Сохранить",
+      "changePassword": "Сменить пароль",
+      "saving": "Сохранение..."
     },
     "messages": {
       "noUser": "Пользователь не загружен",
       "uploading": "Загрузка...",
-      "changeAvatar": "Сменить аватар"
+      "changeAvatar": "Сменить аватар",
+      "passwordChanged": "Пароль успешно изменён."
+    },
+    "validation": {
+      "oldPasswordRequired": "Текущий пароль обязателен.",
+      "newPasswordRequired": "Новый пароль обязателен.",
+      "newPasswordMinLength": "Новый пароль должен быть не менее 8 символов.",
+      "passwordsDoNotMatch": "Пароли не совпадают."
     }
   },
   "notFound": {

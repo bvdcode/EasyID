@@ -43,12 +43,21 @@
       "repeatNewPassword": "Repeat new password"
     },
     "actions": {
-      "save": "Save changes"
+      "save": "Save changes",
+      "changePassword": "Change password",
+      "saving": "Saving..."
     },
     "messages": {
       "noUser": "No user loaded",
       "uploading": "Uploading...",
-      "changeAvatar": "Change avatar"
+      "changeAvatar": "Change avatar",
+      "passwordChanged": "Password successfully changed."
+    },
+    "validation": {
+      "oldPasswordRequired": "Current password is required.",
+      "newPasswordRequired": "New password is required.",
+      "newPasswordMinLength": "New password must be at least 8 characters.",
+      "passwordsDoNotMatch": "Passwords do not match."
     }
   },
   "notFound": {

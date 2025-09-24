@@ -24,4 +24,11 @@ export default class UsersService {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
+
+  static async changePassword(oldPassword: string, newPassword: string): Promise<void> {
+    await apiClient.post(`/users/me/password`, {
+      oldPassword,
+      newPassword,
+    });
+  }
 }

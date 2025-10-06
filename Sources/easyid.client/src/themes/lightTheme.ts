@@ -24,18 +24,16 @@ export const lightTheme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        "input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill":
-          {
-            WebkitTextFillColor: "#e6e6e6",
-            WebkitBoxShadow: "0 0 0px 1000px #151A21 inset",
-            transition:
-              "background-color 999999s ease 0s, color 999999s ease 0s",
-            caretColor: "#e6e6e6",
-          },
-        "input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus":
-          {
-            WebkitBoxShadow: "0 0 0px 1000px #151A21 inset",
-          },
+        "input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill": {
+          WebkitTextFillColor: "rgb(48,48,48)",
+          WebkitBoxShadow: "0 0 0px 1000px rgba(255,255,255,0.95) inset",
+          transition: "background-color 0s ease 0s, color 0s ease 0s",
+          caretColor: "rgb(48,48,48)",
+          borderRadius: 4,
+        },
+        "input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus": {
+          WebkitBoxShadow: "0 0 0px 1000px rgba(255,255,255,0.95) inset",
+        },
       },
     },
   },

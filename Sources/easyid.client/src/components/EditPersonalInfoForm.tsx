@@ -148,13 +148,16 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
       const err = e as Record<string, unknown>;
       const response = err?.response as Record<string, unknown> | undefined;
       const status = response?.status as number | undefined;
-      
+
       // Redirect to login on auth errors
       if (status === 401 || status === 403) {
-        navigate("/login", { replace: true, state: { reason: "unauthorized" } });
+        navigate("/login", {
+          replace: true,
+          state: { reason: "unauthorized" },
+        });
         return;
       }
-      
+
       const msg =
         (response?.data as string | undefined) ||
         (err?.message as string | undefined) ||

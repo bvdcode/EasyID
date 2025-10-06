@@ -38,18 +38,46 @@ const ProfilePage: React.FC = () => {
             }}
           >
             <Grid container spacing={2} alignItems="flex-start">
-              <Grid item xs={12} md={3} lg={2} sx={{ display: "flex", justifyContent: { xs: "center", md: "flex-start" } }}>
+              <Grid
+                item
+                xs={12}
+                md={3}
+                lg={2}
+                sx={{
+                  display: "flex",
+                  justifyContent: { xs: "center", md: "flex-start" },
+                }}
+              >
                 <AvatarUploader />
               </Grid>
               <Grid item xs={12} md={9} lg={10}>
                 <Paper
                   variant="outlined"
-                  sx={{ p: { xs: 2, md: 3 }, height: "100%", display: "flex", flexDirection: "column" }}
+                  sx={{
+                    p: { xs: 2, md: 3 },
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
                 >
                   <Typography variant="h6" gutterBottom>
                     {t("profile.sections.personal")}
                   </Typography>
-                  <EditPersonalInfoForm username={user.username} />
+                  <EditPersonalInfoForm
+                    username={user.username}
+                    initial={{
+                      firstName: user.firstName,
+                      lastName: user.lastName,
+                      middleName: user.middleName,
+                    }}
+                    onSaved={(data) => {
+                      // merge updated fields into user store for consistency
+                      const current = userStore.getState().user;
+                      if (current) {
+                        userStore.getState().setUser({ ...current, ...data });
+                      }
+                    }}
+                  />
                 </Paper>
               </Grid>
             </Grid>

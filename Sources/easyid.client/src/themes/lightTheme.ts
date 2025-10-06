@@ -23,18 +23,22 @@ export const lightTheme = createTheme({
   },
   components: {
     MuiCssBaseline: {
-      styleOverrides: `
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover,
-        input:-webkit-autofill:focus,
-        input:-webkit-autofill:active {
-          -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.95) inset !important;
-        }
-        
-        .storageItemText {
-          background-color: rgba(221, 221, 221, 0.73);
-        }
-      `,
+      styleOverrides: {
+        "input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill":
+          {
+            WebkitTextFillColor: "#e6e6e6",
+            WebkitBoxShadow: "0 0 0px 1000px #151A21 inset",
+            transition:
+              "background-color 999999s ease 0s, color 999999s ease 0s",
+            caretColor: "#e6e6e6",
+          },
+        "input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus":
+          {
+            WebkitBoxShadow: "0 0 0px 1000px #151A21 inset",
+          },
+      },
     },
   },
 });
+
+export default lightTheme;

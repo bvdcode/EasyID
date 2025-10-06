@@ -1,7 +1,7 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { Alert, Box, Button, Grid, Stack, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import UsersService from "../services/usersService";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Alert, Box, Button, Grid, Stack, TextField } from "@mui/material";
 
 export interface PersonalInfoData {
   firstName?: string;
@@ -15,16 +15,29 @@ interface EditPersonalInfoFormProps {
   onSaved?: (data: PersonalInfoData) => void;
 }
 
-const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({ username, initial, onSaved }) => {
+const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
+  username,
+  initial,
+  onSaved,
+}) => {
   const { t } = useTranslation();
   const [firstName, setFirstName] = useState(initial?.firstName ?? "");
   const [lastName, setLastName] = useState(initial?.lastName ?? "");
   const [middleName, setMiddleName] = useState(initial?.middleName ?? "");
+  // Sync internal state if parent passes new initial values (e.g., after fetch)
+  useEffect(() => {
+    setFirstName(initial?.firstName ?? "");
+    setLastName(initial?.lastName ?? "");
+    setMiddleName(initial?.middleName ?? "");
+  }, [initial?.firstName, initial?.lastName, initial?.middleName]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const data: PersonalInfoData = useMemo(() => ({ firstName, lastName, middleName }), [firstName, lastName, middleName]);
+  const data: PersonalInfoData = useMemo(
+    () => ({ firstName, lastName, middleName }),
+    [firstName, lastName, middleName],
+  );
 
   const handleSave = useCallback(async () => {
     setSaving(true);
@@ -38,7 +51,10 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({ username, i
     } catch (e: unknown) {
       const err = e as Record<string, unknown>;
       const response = err?.response as Record<string, unknown> | undefined;
-      const msg = (response?.data as string | undefined) || (err?.message as string | undefined) || "Unknown error";
+      const msg =
+        (response?.data as string | undefined) ||
+        (err?.message as string | undefined) ||
+        "Unknown error";
       setError(msg);
     } finally {
       setSaving(false);
@@ -47,8 +63,12 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({ username, i
 
   return (
     <Stack gap={2}>
-  {error && <Alert severity="error">{error}</Alert>}
-  {success && <Alert severity="success">{t("components.editPersonal.messages.personalSaved")}</Alert>}
+      {error && <Alert severity="error">{error}</Alert>}
+      {success && (
+        <Alert severity="success">
+          {t("components.editPersonal.messages.personalSaved")}
+        </Alert>
+      )}
       <TextField
         label={t("profile.fields.username")}
         value={username}
@@ -86,7 +106,9 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({ username, i
       </Grid>
       <Box display="flex" justifyContent="flex-end">
         <Button variant="contained" onClick={handleSave} disabled={saving}>
-          {saving ? t("components.editPersonal.actions.saving") : t("components.editPersonal.actions.savePersonal")}
+          {saving
+            ? t("components.editPersonal.actions.saving")
+            : t("components.editPersonal.actions.savePersonal")}
         </Button>
       </Box>
     </Stack>

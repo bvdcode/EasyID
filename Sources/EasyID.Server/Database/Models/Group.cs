@@ -7,5 +7,6 @@ namespace EasyID.Server.Database.Models
     public class Group : BaseIdentityEntity
     {
         public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
+        public virtual ICollection<RoleGroup> RoleGroups { get; set; } = [];
     }
 }

@@ -25,7 +25,7 @@ namespace EasyID.Server.Database.Models
         public int PasswordVersion { get; set; }
 
         [Column("first_name")]
-        public string? FirstName { get; set; }
+        public string FirstName { get; set; } = null!;
 
         [Column("last_name")]
         public string? LastName { get; set; }

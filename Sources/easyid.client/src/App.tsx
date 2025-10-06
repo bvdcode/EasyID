@@ -31,7 +31,7 @@ function App() {
                           label: "Dashboard",
                           route: "/app",
                           order: 1,
-                          roles: [], // visible to all
+                          roles: [],
                         },
                         {
                           key: "apps",
@@ -45,7 +45,7 @@ function App() {
                           label: "Profile",
                           route: "/app/profile",
                           order: 100,
-                          roles: ["admin", "user"],
+                          roles: [],
                         },
                       ]}
                     />

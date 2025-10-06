@@ -91,14 +91,14 @@ namespace EasyID.Server.Requests
         {
             permissions.Add(new Permission
             {
-                Name = Constants.SystemPermissions.Users.ChangeAvatar,
+                Name = Constants.SystemPermissions.Users.AvatarUpdate,
                 DisplayName = "Change User Avatar",
                 Description = "Allows changing user avatars.",
                 IsSystem = true,
             });
             permissions.Add(new Permission
             {
-                Name = Constants.SystemPermissions.Users.ChangePassword,
+                Name = Constants.SystemPermissions.Users.PasswordUpdate,
                 DisplayName = "Change User Password",
                 Description = "Allows changing user passwords.",
                 IsSystem = true,
@@ -119,14 +119,14 @@ namespace EasyID.Server.Requests
             });
             permissions.Add(new Permission
             {
-                Name = Constants.SystemPermissions.Users.Edit,
+                Name = Constants.SystemPermissions.Users.Update,
                 DisplayName = "Edit Users",
                 Description = "Allows editing user details.",
                 IsSystem = true,
             });
             permissions.Add(new Permission
             {
-                Name = Constants.SystemPermissions.Users.View,
+                Name = Constants.SystemPermissions.Users.Read,
                 DisplayName = "View Users",
                 Description = "Allows viewing user details.",
                 IsSystem = true,

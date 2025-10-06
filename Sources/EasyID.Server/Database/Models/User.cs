@@ -41,20 +41,5 @@ namespace EasyID.Server.Database.Models
         public byte[] AvatarWebPBytes { get; set; } = [];
 
         public virtual ICollection<GroupUser> UserGroups { get; set; } = [];
-
-        public ClaimsPrincipal GetClaims()
-        {
-            ClaimsPrincipal claims = new();
-            claims.AddIdentity(new ClaimsIdentity(
-            [
-                new Claim("sub", Id.ToString()),
-                new Claim("username", Username),
-                new Claim("email", Email),
-                new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
-                new Claim(ClaimTypes.Name, Username),
-                new Claim(ClaimTypes.Email, Email),
-            ], "EasyID"));
-            return claims;
-        }
     }
 }

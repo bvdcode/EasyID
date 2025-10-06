@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using EasyExtensions.Abstractions;
 using EasyID.Server.Database.Models;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using EasyExtensions.AspNetCore.Extensions;
 using EasyExtensions.EntityFrameworkCore.Exceptions;
 using EasyExtensions.AspNetCore.Authorization.Services;
@@ -43,7 +44,7 @@ namespace EasyID.Server.Controllers
             foundToken.UserAgent = Request.Headers.UserAgent.ToString();
             await _dbContext.SaveChangesAsync();
 
-            string accessToken = _tokenProvider.CreateToken(x => x.AddRange(foundToken.User.GetClaims().Claims));
+            string accessToken = _tokenProvider.CreateToken(x => x.Add(JwtRegisteredClaimNames.Sub, foundToken.UserId.ToString()));
             return Ok(new
             {
                 AccessToken = accessToken,
@@ -90,7 +91,7 @@ namespace EasyID.Server.Controllers
                 _logger.LogInformation("Upgraded password hash for user {Username}", request.Username);
             }
 
-            string accessToken = _tokenProvider.CreateToken(x => x.AddRange(foundUser.GetClaims().Claims));
+            string accessToken = _tokenProvider.CreateToken(x => x.Add(JwtRegisteredClaimNames.Sub, foundUser.Id.ToString()));
             RefreshToken refreshToken = new()
             {
                 City = "local",

@@ -107,6 +107,10 @@ apiClient.interceptors.response.use(
       processQueue(refreshErr as AxiosError);
       // logout on refresh failure
       authStore.getState().logout();
+      // Redirect to login page
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
       return Promise.reject(refreshErr);
     } finally {
       isRefreshing = false;

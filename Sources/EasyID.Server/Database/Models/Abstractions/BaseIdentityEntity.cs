@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;
 
 namespace EasyID.Server.Database.Models.Abstractions
 {
+    [Index(nameof(Name), IsUnique = true)]
+    [Index(nameof(DisplayName), IsUnique = true)]
     public abstract class BaseIdentityEntity : BaseEntity<Guid>
     {
         [Column("display_name")]

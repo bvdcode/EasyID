@@ -27,6 +27,12 @@ namespace EasyID.Server.Database.Models
         [Column("user_agent")]
         public string UserAgent { get; set; } = string.Empty;
 
+        [Column("expires_at")]
+        public DateTime ExpiresAt { get; set; }
+
+        [Column("revoked_at")]
+        public DateTime? RevokedAt { get; set; }
+
         public virtual User User { get; set; } = null!;
     }
 }

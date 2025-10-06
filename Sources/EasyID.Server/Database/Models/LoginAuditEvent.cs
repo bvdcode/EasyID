@@ -12,5 +12,14 @@ namespace EasyID.Server.Database.Models
 
         [Column("ip_address")]
         public IPAddress IPAddress { get; set; } = IPAddress.None;
+
+        [Column("is_successful")]
+        public bool IsSuccessful { get; set; }
+
+        [Column("reason")]
+        public string? Reason { get; set; }
+
+        [Column("user_agent")]
+        public string UserAgent { get; set; } = string.Empty;
     }
 }

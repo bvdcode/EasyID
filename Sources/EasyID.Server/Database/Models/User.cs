@@ -16,7 +16,7 @@ namespace EasyID.Server.Database.Models
         public string Email { get; set; } = string.Empty;
 
         [Column("phone_number")]
-        public long? PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; } = string.Empty;
 
         [Column("password_phc")]
         public string PasswordPhc { get; set; } = string.Empty;
@@ -37,7 +37,7 @@ namespace EasyID.Server.Database.Models
         public int FailedCount { get; set; }
 
         [Column("avatar_webp_bytes")]
-        public byte[] AvatarWebPBytes { get; set; } = [];
+        public byte[]? AvatarWebPBytes { get; set; }
 
         public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
     }

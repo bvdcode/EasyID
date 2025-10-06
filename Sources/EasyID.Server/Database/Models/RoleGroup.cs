@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;
 
 namespace EasyID.Server.Database.Models
 {
     [Table("role_groups")]
+    [Index(nameof(RoleId), nameof(GroupId), IsUnique = true)]
     public class RoleGroup : BaseEntity<Guid>
     {
         [Column("role_id")]

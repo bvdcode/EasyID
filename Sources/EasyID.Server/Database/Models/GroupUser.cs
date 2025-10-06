@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EasyID.Server.Database.Models
 {
     [Table("group_users")]
+    [Index(nameof(UserId), nameof(GroupId), IsUnique = true)]
     public class GroupUser : BaseEntity<Guid>
     {
         [Column("user_id")]

@@ -13,7 +13,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({
 
   useEffect(() => {
     let mounted = true;
-    UsersService.me()
+    UsersService.get("me")
       .then((user) => {
         if (!mounted) return;
         userStore.getState().setUser(user);
@@ -27,12 +27,19 @@ const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({
     };
   }, []);
 
-  if (status === "checking") return (
-    <Box display="flex" alignItems="center" justifyContent="center" height="100vh">
-      <CircularProgress />
-    </Box>
-  );
-  if (status === "denied") return <Navigate to="/login" replace state={{ reason: "unauthorized" }} />;
+  if (status === "checking")
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  if (status === "denied")
+    return <Navigate to="/login" replace state={{ reason: "unauthorized" }} />;
   return children;
 };
 

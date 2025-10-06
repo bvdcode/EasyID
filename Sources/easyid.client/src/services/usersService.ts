@@ -18,17 +18,6 @@ export interface UpdateUserPayload {
 
 export default class UsersService {
   /**
-   * Fetch current user using the special "me" token.
-   * (GET users/me)
-   */
-  /**
-   * @deprecated Use get('me') for uniform style.
-   */
-  static async me(): Promise<UserDto> {
-    return this.get("me");
-  }
-
-  /**
    * Generic fetch by id or "me" (GET users/{id})
    */
   static async get(id: string): Promise<UserDto> {
@@ -47,7 +36,10 @@ export default class UsersService {
    * Lightweight ETag-based avatar fetch (optional usage). Returns a blob URL and ETag.
    * If server doesn't send ETag, it simply refetches each call.
    */
-  static async fetchAvatarWithCache(userId: string, previousEtag?: string): Promise<{ blobUrl: string; etag?: string; notModified?: boolean; }>{
+  static async fetchAvatarWithCache(
+    userId: string,
+    previousEtag?: string,
+  ): Promise<{ blobUrl: string; etag?: string; notModified?: boolean }> {
     const headers: Record<string, string> = {};
     if (previousEtag) headers["If-None-Match"] = previousEtag;
     const res = await fetch(this.avatarUrl(userId), { headers });
@@ -77,7 +69,11 @@ export default class UsersService {
   /**
    * Change password (POST users/{id}/password)
    */
-  static async changePassword(oldPassword: string, newPassword: string, userId: string = "me"): Promise<void> {
+  static async changePassword(
+    oldPassword: string,
+    newPassword: string,
+    userId: string = "me",
+  ): Promise<void> {
     await apiClient.post(`/users/${userId}/password`, {
       oldPassword,
       newPassword,
@@ -89,7 +85,7 @@ export default class UsersService {
    */
   static async updatePersonalInfo(
     data: UpdateUserPayload,
-    userId: string = "me"
+    userId: string = "me",
   ): Promise<void> {
     await apiClient.patch(`/users/${userId}`, data);
   }

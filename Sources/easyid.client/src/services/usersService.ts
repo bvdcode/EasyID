@@ -14,6 +14,8 @@ export interface UserDto {
 }
 
 export interface UpdateUserPayload {
+  /** Optional new username */
+  username?: string;
   firstName?: string;
   lastName?: string;
   middleName?: string;

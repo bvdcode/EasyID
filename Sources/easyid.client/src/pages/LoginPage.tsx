@@ -1,11 +1,5 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { toast } from "react-toastify";
 import { MetricsService } from "../services";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -51,7 +45,7 @@ const LoginPage: React.FC = () => {
   const handleLogin = async () => {
     setError(null);
     if (!username || !password) {
-      alert(t("loginPage.emptyPasswordError"));
+      toast.warn(t("loginPage.emptyPasswordError"));
       return;
     }
     setSubmitting(true);
@@ -65,8 +59,15 @@ const LoginPage: React.FC = () => {
           ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (e as Record<string, any>).response?.status
           : undefined;
-      if (status === 401) setError("Invalid username or password");
-      else setError((e as Error)?.message || "Login failed");
+      if (status === 401) {
+        const msg = t("loginErrors.invalidCredentials", { defaultValue: "Invalid username or password" });
+        setError(msg);
+        toast.error(msg);
+      } else {
+        const msg = (e as Error)?.message || t("loginErrors.unexpected", { defaultValue: "Login failed" });
+        setError(msg);
+        toast.error(msg);
+      }
     } finally {
       setSubmitting(false);
     }

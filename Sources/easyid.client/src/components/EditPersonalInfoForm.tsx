@@ -1,9 +1,11 @@
 import { useTranslation } from "react-i18next";
 import UsersService from "../services/usersService";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Alert, Box, Button, Grid, Stack, TextField } from "@mui/material";
+import { Box, Button, Grid, Stack, TextField } from "@mui/material";
+import { toast } from "react-toastify";
 
 export interface PersonalInfoData {
+  username?: string;
   firstName?: string;
   lastName?: string;
   middleName?: string;
@@ -31,8 +33,7 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
     setMiddleName(initial?.middleName ?? "");
   }, [initial?.firstName, initial?.lastName, initial?.middleName]);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [, setError] = useState<string | null>(null); // error surfaced via toast only
 
   const data: PersonalInfoData = useMemo(
     () => ({ firstName, lastName, middleName }),
@@ -42,12 +43,11 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
   const handleSave = useCallback(async () => {
     setSaving(true);
     setError(null);
-    setSuccess(false);
     try {
       // Attempt to save; backend endpoint may be introduced later
-      await UsersService.updatePersonalInfo(data);
-      setSuccess(true);
-      if (onSaved) onSaved(data);
+      await UsersService.updatePersonalInfo({ username, ...data });
+      toast.success(t("components.editPersonal.messages.personalSaved"));
+  if (onSaved) onSaved({ username, ...data });
     } catch (e: unknown) {
       const err = e as Record<string, unknown>;
       const response = err?.response as Record<string, unknown> | undefined;
@@ -56,19 +56,15 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
         (err?.message as string | undefined) ||
         "Unknown error";
       setError(msg);
+      toast.error(msg);
     } finally {
       setSaving(false);
     }
-  }, [data, onSaved]);
+  }, [data, onSaved, t, username]);
 
   return (
     <Stack gap={2}>
-      {error && <Alert severity="error">{error}</Alert>}
-      {success && (
-        <Alert severity="success">
-          {t("components.editPersonal.messages.personalSaved")}
-        </Alert>
-      )}
+      {/* Errors & success handled via toast notifications */}
       <TextField
         label={t("profile.fields.username")}
         value={username}

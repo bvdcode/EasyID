@@ -1,4 +1,11 @@
-import { Stack, Avatar, Button, Typography, CircularProgress } from "@mui/material";
+import {
+  Stack,
+  Avatar,
+  Button,
+  Typography,
+  CircularProgress,
+  Box,
+} from "@mui/material";
 import { userStore } from "../stores/userStore";
 import UsersService from "../services/usersService";
 import React, { useCallback, useRef, useState } from "react";
@@ -44,14 +51,20 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       } catch (err) {
         const error = err as { response?: { status?: number } };
         const status = error.response?.status;
-        
+
         // Redirect to login on auth errors
         if (status === 401 || status === 403) {
-          navigate("/login", { replace: true, state: { reason: "unauthorized" } });
+          navigate("/login", {
+            replace: true,
+            state: { reason: "unauthorized" },
+          });
           return;
         }
-        
-        setError((err as Error).message || t("common.error", { defaultValue: "Error" }));
+
+        setError(
+          (err as Error).message ||
+            t("common.error", { defaultValue: "Error" }),
+        );
       } finally {
         setUploading(false);
         if (fileRef.current) fileRef.current.value = "";
@@ -63,7 +76,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   if (!user) return null;
 
   return (
-    <Stack spacing={2} alignItems="center">
+    <Stack spacing={2} alignItems="center" sx={{ position: "relative" }}>
       <Avatar
         src={src}
         alt={user.username}
@@ -73,13 +86,23 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         {user.username?.charAt(0).toUpperCase()}
       </Avatar>
       {uploading && (
-        <CircularProgress
+        <Box
           sx={{
             position: "absolute",
+            top: 0,
+            left: 0,
             width: size,
             height: size,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius:
+              variant === "circular" ? "50%" : variant === "rounded" ? 1 : 0,
+            bgcolor: "rgba(0, 0, 0, 0.5)",
           }}
-        />
+        >
+          <CircularProgress size={size * 0.4} sx={{ color: "white" }} />
+        </Box>
       )}
       <input
         hidden
@@ -102,7 +125,9 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
             textAlign: "center",
           }}
         >
-          {uploading ? t("profile.messages.uploading") : t("profile.messages.changeAvatar")}
+          {uploading
+            ? t("profile.messages.uploading")
+            : t("profile.messages.changeAvatar")}
         </span>
       </Button>
       {error && (

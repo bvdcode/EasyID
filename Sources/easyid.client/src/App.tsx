@@ -3,12 +3,21 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import "react-toastify/dist/ReactToastify.css";
 import { Box, CssBaseline } from "@mui/material";
-import { LoginPage, DashboardPage, AppsPage } from "./pages";
+import {
+  LoginPage,
+  DashboardPage,
+  AppsPage,
+  GroupsPage,
+  RolesPage,
+  PermissionsPage,
+  UsersPage,
+} from "./pages";
 import AppLayout from "./components/layout/AppLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { ConfirmProvider } from "material-ui-confirm";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { PERMISSIONS } from "./constants/app";
 
 function App() {
   return (
@@ -31,21 +40,47 @@ function App() {
                           label: "Dashboard",
                           route: "/app",
                           order: 1,
-                          roles: [],
                         },
                         {
                           key: "apps",
                           label: "Apps",
                           route: "/app/apps",
+                          order: 20,
+                          requiredPermissionPrefix: PERMISSIONS.APPS,
+                        },
+                        {
+                          key: "groups",
+                          label: "Groups",
+                          route: "/app/groups",
+                          order: 30,
+                          requiredPermissionPrefix: PERMISSIONS.GROUPS,
+                        },
+                        {
+                          key: "roles",
+                          label: "Roles",
+                          route: "/app/roles",
+                          order: 40,
+                          requiredPermissionPrefix: PERMISSIONS.ROLES,
+                        },
+                        {
+                          key: "permissions",
+                          label: "Permissions",
+                          route: "/app/permissions",
                           order: 50,
-                          roles: ["admin"],
+                          requiredPermissionPrefix: PERMISSIONS.PERMISSIONS,
+                        },
+                        {
+                          key: "users",
+                          label: "Users",
+                          route: "/app/users",
+                          order: 60,
+                          requiredPermissionPrefix: PERMISSIONS.USERS,
                         },
                         {
                           key: "profile",
                           label: "Profile",
                           route: "/app/profile",
                           order: 100,
-                          roles: [],
                         },
                       ]}
                     />
@@ -54,6 +89,10 @@ function App() {
               >
                 <Route index element={<DashboardPage />} />
                 <Route path="apps" element={<AppsPage />} />
+                <Route path="groups" element={<GroupsPage />} />
+                <Route path="roles" element={<RolesPage />} />
+                <Route path="permissions" element={<PermissionsPage />} />
+                <Route path="users" element={<UsersPage />} />
                 <Route path="profile" element={<ProfilePage />} />
               </Route>
               <Route path="*" element={<NotFoundPage />} />

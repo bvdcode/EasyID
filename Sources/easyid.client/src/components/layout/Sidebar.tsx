@@ -13,7 +13,8 @@ export interface SidebarItem {
   icon?: React.ReactNode;
   route: string;
   order?: number;
-  roles?: string[]; // allowed roles; if omitted => visible to all
+  /** Required permission prefix (e.g., "easyid.apps"); if omitted => visible to all */
+  requiredPermissionPrefix?: string;
 }
 
 interface SidebarProps {

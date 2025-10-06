@@ -5,6 +5,7 @@ import Sidebar, { SidebarItem } from "./Sidebar";
 import { userStore } from "../../stores/userStore";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Box, Divider, Paper, Tabs, Tab, useMediaQuery } from "@mui/material";
+import { hasPermissionPrefix } from "../../utils/permissionUtils";
 
 interface AppLayoutProps {
   sidebarItems: SidebarItem[];
@@ -20,13 +21,15 @@ const AppLayout: React.FC<AppLayoutProps> = ({ sidebarItems, title }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const sorted = useMemo(() => {
-    const userRoles = (user?.roles ?? []).map((r) => r.toLowerCase());
+    const userPermissions = user?.permissions ?? [];
     const filtered = sidebarItems.filter((item) => {
-      if (!item.roles || item.roles.length === 0) return true; // public
-      return item.roles.some((r) => userRoles.includes(r.toLowerCase()));
+      // If no permission requirement => visible to all
+      if (!item.requiredPermissionPrefix) return true;
+      // Check if user has at least one permission with this prefix
+      return hasPermissionPrefix(userPermissions, item.requiredPermissionPrefix);
     });
     return [...filtered].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  }, [sidebarItems, user?.roles]);
+  }, [sidebarItems, user?.permissions]);
 
   const activeKey = useMemo(() => {
     const path = location.pathname;

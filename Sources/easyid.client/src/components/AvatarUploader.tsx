@@ -104,19 +104,11 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         variant="outlined"
         onClick={pick}
         disabled={uploading}
-        sx={{ minWidth: 140 }}
+        sx={{ minWidth: 140, textAlign: "center" }}
       >
-        <span
-          style={{
-            display: "inline-block",
-            width: "100%",
-            textAlign: "center",
-          }}
-        >
-          {uploading
-            ? t("profile.messages.uploading")
-            : t("profile.messages.changeAvatar")}
-        </span>
+        {uploading
+          ? t("profile.messages.uploading")
+          : t("profile.messages.changeAvatar")}
       </Button>
       {error && (
         <Typography

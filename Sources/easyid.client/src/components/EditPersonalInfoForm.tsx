@@ -123,17 +123,13 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
       middleName: true,
     });
 
-    // Check for validation errors
-    const errors = [
-      validateUsername(username),
-      validateFirstName(firstName),
-      validateOptionalName(lastName, "Last name"),
-      validateOptionalName(middleName, "Middle name"),
-    ].filter(Boolean);
-
-    if (errors.length > 0) {
-      toast.error(errors[0]!);
-      return;
+    // Check for validation errors (reuse existing computed errors)
+    if (hasValidationErrors) {
+      const firstError = usernameError || firstNameError || lastNameError || middleNameError;
+      if (firstError) {
+        toast.error(firstError);
+        return;
+      }
     }
 
     setSaving(true);

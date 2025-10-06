@@ -76,34 +76,36 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   if (!user) return null;
 
   return (
-    <Stack spacing={2} alignItems="center" sx={{ position: "relative" }}>
-      <Avatar
-        src={src}
-        alt={user.username}
-        variant={variant}
-        sx={{ width: size, height: size, fontSize: size * 0.35 }}
-      >
-        {user.username?.charAt(0).toUpperCase()}
-      </Avatar>
-      {uploading && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: size,
-            height: size,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius:
-              variant === "circular" ? "50%" : variant === "rounded" ? 1 : 0,
-            bgcolor: "rgba(0, 0, 0, 0.5)",
-          }}
+    <Stack spacing={2} alignItems="center">
+      <Box sx={{ position: "relative", display: "inline-block" }}>
+        <Avatar
+          src={src}
+          alt={user.username}
+          variant={variant}
+          sx={{ width: size, height: size, fontSize: size * 0.35 }}
         >
-          <CircularProgress size={size * 0.4} sx={{ color: "white" }} />
-        </Box>
-      )}
+          {user.username?.charAt(0).toUpperCase()}
+        </Avatar>
+        {uploading && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: size,
+              height: size,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius:
+                variant === "circular" ? "50%" : variant === "rounded" ? 1 : 0,
+              bgcolor: "rgba(0, 0, 0, 0.5)",
+            }}
+          >
+            <CircularProgress size={size * 0.4} sx={{ color: "white" }} />
+          </Box>
+        )}
+      </Box>
       <input
         hidden
         ref={fileRef}

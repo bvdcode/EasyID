@@ -3,7 +3,7 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import "react-toastify/dist/ReactToastify.css";
 import { Box, CssBaseline } from "@mui/material";
-import { LoginPage, DashboardPage } from "./pages";
+import { LoginPage, DashboardPage, AppsPage } from "./pages";
 import AppLayout from "./components/layout/AppLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { ConfirmProvider } from "material-ui-confirm";
@@ -34,6 +34,13 @@ function App() {
                           roles: [], // visible to all
                         },
                         {
+                          key: "apps",
+                          label: "Apps",
+                          route: "/app/apps",
+                          order: 50,
+                          roles: ["admin"],
+                        },
+                        {
                           key: "profile",
                           label: "Profile",
                           route: "/app/profile",
@@ -46,6 +53,7 @@ function App() {
                 }
               >
                 <Route index element={<DashboardPage />} />
+                <Route path="apps" element={<AppsPage />} />
                 <Route path="profile" element={<ProfilePage />} />
               </Route>
               <Route path="*" element={<NotFoundPage />} />

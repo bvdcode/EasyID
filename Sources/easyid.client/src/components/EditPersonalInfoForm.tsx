@@ -18,36 +18,52 @@ interface EditPersonalInfoFormProps {
 }
 
 const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
-  username,
+  username: initialUsername,
   initial,
   onSaved,
 }) => {
   const { t } = useTranslation();
+  const [username, setUsername] = useState(initialUsername ?? "");
   const [firstName, setFirstName] = useState(initial?.firstName ?? "");
   const [lastName, setLastName] = useState(initial?.lastName ?? "");
   const [middleName, setMiddleName] = useState(initial?.middleName ?? "");
   // Sync internal state if parent passes new initial values (e.g., after fetch)
   useEffect(() => {
+    setUsername(initialUsername ?? "");
     setFirstName(initial?.firstName ?? "");
     setLastName(initial?.lastName ?? "");
     setMiddleName(initial?.middleName ?? "");
-  }, [initial?.firstName, initial?.lastName, initial?.middleName]);
+  }, [
+    initialUsername,
+    initial?.firstName,
+    initial?.lastName,
+    initial?.middleName,
+  ]);
   const [saving, setSaving] = useState(false);
   const [, setError] = useState<string | null>(null); // error surfaced via toast only
 
   const data: PersonalInfoData = useMemo(
-    () => ({ firstName, lastName, middleName }),
-    [firstName, lastName, middleName],
+    () => ({ username, firstName, lastName, middleName }),
+    [username, firstName, lastName, middleName],
   );
+
+  // Check if data has changed from initial values
+  const hasChanges = useMemo(() => {
+    return (
+      username !== initialUsername ||
+      firstName !== (initial?.firstName ?? "") ||
+      lastName !== (initial?.lastName ?? "") ||
+      middleName !== (initial?.middleName ?? "")
+    );
+  }, [username, initialUsername, firstName, lastName, middleName, initial]);
 
   const handleSave = useCallback(async () => {
     setSaving(true);
     setError(null);
     try {
-      // Attempt to save; backend endpoint may be introduced later
-      await UsersService.updatePersonalInfo({ username, ...data });
+      await UsersService.updatePersonalInfo(data);
       toast.success(t("components.editPersonal.messages.personalSaved"));
-  if (onSaved) onSaved({ username, ...data });
+      if (onSaved) onSaved(data);
     } catch (e: unknown) {
       const err = e as Record<string, unknown>;
       const response = err?.response as Record<string, unknown> | undefined;
@@ -60,7 +76,7 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
     } finally {
       setSaving(false);
     }
-  }, [data, onSaved, t, username]);
+  }, [data, onSaved, t]);
 
   return (
     <Stack gap={2}>
@@ -69,8 +85,8 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
         label={t("profile.fields.username")}
         value={username}
         size="small"
-        InputProps={{ readOnly: true }}
-        disabled
+        onChange={(e) => setUsername(e.target.value)}
+        autoComplete="off"
       />
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
@@ -105,7 +121,11 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
         </Grid>
       </Grid>
       <Box display="flex" justifyContent="flex-end">
-        <Button variant="contained" onClick={handleSave} disabled={saving}>
+        <Button
+          variant="contained"
+          onClick={handleSave}
+          disabled={saving || !hasChanges}
+        >
           {saving
             ? t("components.editPersonal.actions.saving")
             : t("components.editPersonal.actions.savePersonal")}

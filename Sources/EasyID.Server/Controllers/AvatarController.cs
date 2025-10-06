@@ -23,7 +23,7 @@ namespace EasyID.Server.Controllers
         }
 
         [Authorize]
-        [HttpPut(Routes.Users + "/me/avatar")]
+        [HttpPut(Routes.Users + "/{id:guid}/avatar")]
         public async Task<IActionResult> UpdateAvatar([FromForm] IFormFile file)
         {
             User user = await _dbContext.GetUserAsync(User);

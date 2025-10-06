@@ -13,10 +13,6 @@ namespace EasyID.Server.Controllers
     public class UsersController(AppDbContext _dbContext, IPasswordHashService _hashService) : ControllerBase
     {
         [Authorize]
-        [HttpGet(Routes.Users + "/me")]
-        public Task<UserDto> Me() => GetUser(User.GetUserId());
-
-        [Authorize]
         [HttpGet(Routes.Users + "/{id:guid}")]
         public async Task<UserDto> GetUser(Guid id)
         {
@@ -26,9 +22,9 @@ namespace EasyID.Server.Controllers
 
         [Authorize]
         [HttpPost(Routes.Users + "/{id:guid}/password")]
-        public async Task<IActionResult> ChangePassword([FromBody] UpdateUserPasswordRequestDto request)
+        public async Task<IActionResult> ChangePassword([FromRoute] Guid id, [FromBody] UpdateUserPasswordRequestDto request)
         {
-            User user = await _dbContext.GetUserAsync(User);
+            User user = await _dbContext.GetUserAsync(id);
             if (!string.IsNullOrWhiteSpace(request.OldPassword) && !string.IsNullOrWhiteSpace(request.NewPassword))
             {
                 if (!_hashService.Verify(request.OldPassword, user.PasswordPhc, out _))
@@ -46,7 +42,7 @@ namespace EasyID.Server.Controllers
         [HttpPatch(Routes.Users + "/{id:guid}")]
         public async Task<IActionResult> UpdateProfile([FromRoute] Guid id, [FromBody] UpdateUserRequestDto request)
         {
-            User user = await _dbContext.GetUserAsync(User);
+            User user = await _dbContext.GetUserAsync(id);
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.MiddleName = request.MiddleName;

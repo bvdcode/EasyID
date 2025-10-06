@@ -80,21 +80,7 @@ namespace EasyID.Server.Requests
 
         private async Task<IReadOnlyList<Permission>> CreateSystemPermissionsAsync(CancellationToken ct)
         {
-            var permissions = new List<Permission>
-            {
-                new() {
-                    Name = "*",
-                    DisplayName = "All Permissions",
-                    Description = "Grants all permissions.",
-                    IsSystem = true,
-                },
-                new() {
-                    Name = Constants.AppName.ToLower() + ".*",
-                    DisplayName = Constants.AppName + " All Permissions",
-                    Description = "Grants all permissions for " + Constants.AppName + ".",
-                    IsSystem = true,
-                }
-            };
+            var permissions = new List<Permission>();
             AddUserPermissions(permissions);
             await dbContext.Permissions.AddRangeAsync(permissions, ct);
             await dbContext.SaveChangesAsync(ct);

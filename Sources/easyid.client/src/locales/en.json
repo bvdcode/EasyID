@@ -18,6 +18,11 @@
   "authReasons": {
     "unauthorized": "Session expired or unauthorized. Please login again."
   },
+  "loginErrors": {
+    "serverError": "Server error while loading your session. Please try again later.",
+    "unexpected": "Unexpected error while loading your session.",
+    "invalidCredentials": "Invalid username or password"
+  },
   "common": {
     "cancel": "Cancel",
     "confirm": "Confirm",
@@ -92,5 +97,18 @@
     "title": "Page not found",
     "description": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
     "goHome": "Go to dashboard"
+  },
+  "protectedRoute": {
+    "errors": {
+      "title": "Unable to load session",
+      "network": "Network error while contacting the server.",
+      "serverError": "Server error occurred while loading your session.",
+      "unexpected": "Unexpected error (code: {{code}}).",
+      "code": "Code: {{code}}"
+    },
+    "actions": {
+      "retry": "Retry",
+      "goLogin": "Go to login"
+    }
   }
 }

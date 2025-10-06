@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { MetricsService } from "../services";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { authStore } from "../stores/authStore";
 import { userStore } from "../stores/userStore";
 import React, { useEffect, useState } from "react";
@@ -19,6 +19,7 @@ const LoginPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [hasUsers, setHasUsers] = useState<boolean | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     MetricsService.getMetrics()
@@ -32,6 +33,20 @@ const LoginPage: React.FC = () => {
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const routeState = (location.state as { reason?: string; code?: number } | null) || null;
+  const initialRouteError = React.useMemo(() => {
+    if (!routeState?.reason) return null;
+    switch (routeState.reason) {
+      case "unauthorized":
+        return t("authReasons.unauthorized");
+      case "serverError":
+        return t("loginErrors.serverError");
+      case "unexpected":
+        return t("loginErrors.unexpected");
+      default:
+        return null;
+    }
+  }, [routeState?.reason, t]);
 
   const handleLogin = async () => {
     setError(null);
@@ -98,7 +113,9 @@ const LoginPage: React.FC = () => {
         {hasUsers === false && (
           <Alert severity="info">{t("loginPage.firstUserInfo")}</Alert>
         )}
-        {error && <Alert severity="error">{error}</Alert>}
+        {(error || initialRouteError) && (
+          <Alert severity="error">{error || initialRouteError}</Alert>
+        )}
         <Button
           variant="contained"
           color="primary"

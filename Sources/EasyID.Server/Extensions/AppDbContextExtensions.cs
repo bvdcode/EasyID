@@ -3,6 +3,7 @@ using EasyID.Server.Database;
 using System.Security.Claims;
 using EasyID.Server.Database.Models;
 using Microsoft.EntityFrameworkCore;
+using EasyExtensions.EntityFrameworkCore.Exceptions;
 
 namespace EasyID.Server.Extensions
 {
@@ -12,12 +13,13 @@ namespace EasyID.Server.Extensions
         {
             Guid userId = claims.GetUserId();
             User? found = await dbContext.Users.FindAsync(userId);
-            return found ?? throw new UnauthorizedAccessException(userId.ToString());
+            return found ?? throw new EntityNotFoundException(nameof(User));
         }
 
         public static async Task<User> GetUserAsync(this AppDbContext dbContext, Guid userId)
         {
-            return await dbContext.Users.FirstAsync(u => u.Id == userId);
+            return await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId)
+                ?? throw new EntityNotFoundException(nameof(User));
         }
     }
 }

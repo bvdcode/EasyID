@@ -33,27 +33,6 @@ export default class UsersService {
   }
 
   /**
-   * Lightweight ETag-based avatar fetch (optional usage). Returns a blob URL and ETag.
-   * If server doesn't send ETag, it simply refetches each call.
-   */
-  static async fetchAvatarWithCache(
-    userId: string,
-    previousEtag?: string,
-  ): Promise<{ blobUrl: string; etag?: string; notModified?: boolean }> {
-    const headers: Record<string, string> = {};
-    if (previousEtag) headers["If-None-Match"] = previousEtag;
-    const res = await fetch(this.avatarUrl(userId), { headers });
-    if (res.status === 304) {
-      return { blobUrl: "", etag: previousEtag, notModified: true };
-    }
-    if (!res.ok) throw new Error(`Avatar fetch failed: ${res.status}`);
-    const etag = res.headers.get("ETag") || undefined;
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    return { blobUrl, etag };
-  }
-
-  /**
    * Upload avatar for current (or specific) user. (PUT users/{id}/avatar)
    * @param file image file
    * @param userId defaults to "me" for authenticated user

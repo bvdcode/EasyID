@@ -34,6 +34,7 @@ namespace EasyID.Server
             app.MapStaticAssets();
             app.UseAuthentication();
             app.UseUsersMeRewrite();
+            app.UseRouting();
             app.UseAuthorization();
             app.MapControllers();
             app.MapFallbackToFile("/index.html");

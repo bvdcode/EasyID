@@ -8,9 +8,9 @@ namespace EasyID.Server.Database.Models
     public class LoginAuditEvent : BaseEntity<Guid>
     {
         [Column("user_id")]
-        public required Guid UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Column("ip_address")]
-        public required IPAddress IPAddress { get; set; }
+        public IPAddress IPAddress { get; set; } = IPAddress.None;
     }
 }

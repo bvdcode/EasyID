@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyID.Server.Database.Models
 {
-    [Table("groups")]
-    public class Group : BaseIdentityEntity
+    [Table("permissions")]
+    public class Permission : BaseIdentityEntity
     {
-        public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
+
     }
 }

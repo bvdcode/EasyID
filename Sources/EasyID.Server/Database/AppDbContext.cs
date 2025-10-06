@@ -9,6 +9,7 @@ namespace EasyID.Server.Database
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Group> Groups { get; set; } = null!;
         public DbSet<GroupUser> GroupUsers { get; set; } = null!;
+        public DbSet<Permission> Permissions { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
     }
 }

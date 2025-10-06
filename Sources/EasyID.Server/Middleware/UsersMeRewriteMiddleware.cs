@@ -3,18 +3,8 @@ using Microsoft.Extensions.Options;
 
 namespace EasyID.Server.Middleware
 {
-    public sealed class UsersMeRewriteOptions
-    {
-        public string[] ClaimTypesOrder { get; set; } =
-        [
-            "sub",
-            "uid",
-            ClaimTypes.NameIdentifier,
-            ClaimTypes.Sid
-        ];
-    }
 
-    public sealed class UsersMeRewriteMiddleware(
+    public class UsersMeRewriteMiddleware(
         ILogger<UsersMeRewriteMiddleware> logger,
         IOptions<UsersMeRewriteOptions> options,
         RequestDelegate next)

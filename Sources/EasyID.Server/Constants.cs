@@ -6,60 +6,60 @@
 
         public static class SystemGroups
         {
-            public const string Users = "builtin-users";
-            public const string Admin = "builtin-administrators";
+            public const string Users = "builtin.users";
+            public const string Admins = "builtin.admins";
         }
 
         public static class SystemRoles
         {
-            public const string Admin = "admin";
-            public const string User = "user";
+            public const string Admin = "easyid.admin";
+            public const string User = "easyid.user";
         }
 
         public static class SystemPermissions
         {
             public static class Users
             {
-                public const string View = "builtin.users.read";
-                public const string Edit = "builtin.users.update";
-                public const string Delete = "builtin.users.delete";
-                public const string Create = "builtin.users.create";
-                public const string ChangeAvatar = "builtin.users.change_avatar";
-                public const string ChangePassword = "builtin.users.change_password";
+                public const string View = "easyid.users.read";
+                public const string Edit = "easyid.users.update";
+                public const string Delete = "easyid.users.delete";
+                public const string Create = "easyid.users.create";
+                public const string ChangeAvatar = "easyid.users.change_avatar";
+                public const string ChangePassword = "easyid.users.change_password";
             }
 
             public static class Apps
             {
-                public const string View = "builtin.apps.read";
-                public const string Create = "builtin.apps.create";
-                public const string Update = "builtin.apps.update";
-                public const string Delete = "builtin.apps.delete";
+                public const string View = "easyid.apps.read";
+                public const string Create = "easyid.apps.create";
+                public const string Update = "easyid.apps.update";
+                public const string Delete = "easyid.apps.delete";
             }
 
             public static class Flags
             {
-                public const string View = "builtin.flags.read";
-                public const string Create = "builtin.flags.create";
-                public const string Update = "builtin.flags.update";
-                public const string Delete = "builtin.flags.delete";
+                public const string View = "easyid.flags.read";
+                public const string Create = "easyid.flags.create";
+                public const string Update = "easyid.flags.update";
+                public const string Delete = "easyid.flags.delete";
             }
 
             public static class Groups
             {
-                public const string View = "builtin.groups.read";
-                public const string Create = "builtin.groups.create";
-                public const string Update = "builtin.groups.update";
-                public const string Delete = "builtin.groups.delete";
-                public const string ManageMembers = "builtin.groups.manage_members";
+                public const string View = "easyid.groups.read";
+                public const string Create = "easyid.groups.create";
+                public const string Update = "easyid.groups.update";
+                public const string Delete = "easyid.groups.delete";
+                public const string ManageMembers = "easyid.groups.manage_members";
             }
 
             public static class Permissions
             {
-                public const string View = "builtin.permissions.read";
-                public const string Create = "builtin.permissions.create";
-                public const string Update = "builtin.permissions.update";
-                public const string Delete = "builtin.permissions.delete";
-                public const string Assign = "builtin.permissions.assign";
+                public const string View = "easyid.permissions.read";
+                public const string Create = "easyid.permissions.create";
+                public const string Update = "easyid.permissions.update";
+                public const string Delete = "easyid.permissions.delete";
+                public const string Assign = "easyid.permissions.assign";
             }
         }
     }

@@ -13,7 +13,7 @@ namespace EasyID.Server.Requests.Initialization
             var adminGroup = new Group
             {
                 IsSystem = true,
-                Name = Constants.SystemGroups.Admin,
+                Name = Constants.SystemGroups.Admins,
                 DisplayName = Constants.AppName + " Administrators",
                 Description = "System administrators group with full access to administration features.",
             };

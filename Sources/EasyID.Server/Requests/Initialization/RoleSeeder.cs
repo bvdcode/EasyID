@@ -28,7 +28,7 @@ namespace EasyID.Server.Requests.Initialization
             await dbContext.Roles.AddRangeAsync([adminRole, userRole], cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
 
-            return new[] { adminRole, userRole };
+            return [adminRole, userRole];
         }
 
         public static async Task LinkRolesToGroupsAsync(
@@ -39,14 +39,14 @@ namespace EasyID.Server.Requests.Initialization
         {
             var adminRole = roles.First(r => r.Name == Constants.SystemRoles.Admin);
             var userRole = roles.First(r => r.Name == Constants.SystemRoles.User);
-            var adminGroup = groups.First(g => g.Name == Constants.SystemGroups.Admin);
+            var adminGroup = groups.First(g => g.Name == Constants.SystemGroups.Admins);
             var usersGroup = groups.First(g => g.Name == Constants.SystemGroups.Users);
 
-            await dbContext.RoleGroups.AddRangeAsync(new[]
-            {
+            await dbContext.RoleGroups.AddRangeAsync(
+            [
                 new RoleGroup { RoleId = adminRole.Id, GroupId = adminGroup.Id },
                 new RoleGroup { RoleId = userRole.Id, GroupId = usersGroup.Id }
-            }, cancellationToken);
+            ], cancellationToken);
 
             await dbContext.SaveChangesAsync(cancellationToken);
         }

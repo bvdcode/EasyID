@@ -12,20 +12,12 @@ namespace EasyID.Server.Requests
         public LoginRequestDto FirstLoginRequest { get; set; } = null!;
     }
 
-    public class InitializeInstanceQueryHandler : IRequestHandler<InitializeInstanceQuery>
+    public class InitializeInstanceQueryHandler(IPasswordHashService hashService, AppDbContext dbContext)
+        : IRequestHandler<InitializeInstanceQuery>
     {
-        private readonly IPasswordHashService _hashService;
-        private readonly AppDbContext _dbContext;
-
-        public InitializeInstanceQueryHandler(IPasswordHashService hashService, AppDbContext dbContext)
-        {
-            _hashService = hashService;
-            _dbContext = dbContext;
-        }
-
         public async Task Handle(InitializeInstanceQuery request, CancellationToken cancellationToken)
         {
-            if (await _dbContext.Users.AnyAsync(cancellationToken))
+            if (await dbContext.Users.AnyAsync(cancellationToken))
             {
                 return; // Already initialized.
             }
@@ -34,18 +26,18 @@ namespace EasyID.Server.Requests
             ArgumentException.ThrowIfNullOrWhiteSpace(request.FirstLoginRequest.Password, nameof(request.FirstLoginRequest.Password));
 
             var user = await UserSeeder.SeedInitialAdminUserAsync(
-                _dbContext,
-                _hashService,
+                dbContext,
+                hashService,
                 request.FirstLoginRequest.Username,
                 request.FirstLoginRequest.Password,
                 cancellationToken);
 
-            var groups = await GroupSeeder.SeedSystemGroupsAsync(_dbContext, user, cancellationToken);
-            var permissions = await PermissionSeeder.SeedSystemPermissionsAsync(_dbContext, cancellationToken);
-            var roles = await RoleSeeder.SeedSystemRolesAsync(_dbContext, cancellationToken);
+            var groups = await GroupSeeder.SeedSystemGroupsAsync(dbContext, user, cancellationToken);
+            var permissions = await PermissionSeeder.SeedSystemPermissionsAsync(dbContext, cancellationToken);
+            var roles = await RoleSeeder.SeedSystemRolesAsync(dbContext, cancellationToken);
 
-            await RoleSeeder.LinkRolesToGroupsAsync(_dbContext, roles, groups, cancellationToken);
-            await RoleSeeder.GrantPermissionsToRolesAsync(_dbContext, permissions, roles, cancellationToken);
+            await RoleSeeder.LinkRolesToGroupsAsync(dbContext, roles, groups, cancellationToken);
+            await RoleSeeder.GrantPermissionsToRolesAsync(dbContext, permissions, roles, cancellationToken);
         }
     }
 }

@@ -40,6 +40,6 @@ namespace EasyID.Server.Database.Models
         [Column("avatar_webp_bytes")]
         public byte[] AvatarWebPBytes { get; set; } = [];
 
-        public virtual ICollection<GroupUser> UserGroups { get; set; } = [];
+        public virtual ICollection<GroupUser> GroupUsers { get; set; } = [];
     }
 }

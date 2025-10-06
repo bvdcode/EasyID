@@ -6,6 +6,6 @@ namespace EasyID.Server.Database.Models
     [Table("permissions")]
     public class Permission : BaseIdentityEntity
     {
-
+        public virtual ICollection<PermissionRole> PermissionRoles { get; set; } = [];
     }
 }

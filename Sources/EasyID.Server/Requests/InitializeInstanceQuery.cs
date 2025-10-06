@@ -53,14 +53,14 @@ namespace EasyID.Server.Requests
             var adminGroup = new Group
             {
                 IsSystem = true,
-                Name = Constants.AdminGroupName,
+                Name = Constants.SystemGroups.Admin,
                 DisplayName = Constants.AppName + " Administrators",
                 Description = "System administrators group with full access to administration features.",
             };
             var userGroup = new Group
             {
                 IsSystem = true,
-                Name = Constants.UsersGroupName,
+                Name = Constants.SystemGroups.Users,
                 DisplayName = Constants.AppName + " Users",
                 Description = "Default users group with limited permissions.",
             };

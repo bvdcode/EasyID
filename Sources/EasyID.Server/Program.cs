@@ -2,6 +2,7 @@ using FluentValidation;
 using EasyID.Server.Mappings;
 using EasyID.Server.Database;
 using EasyID.Server.Extensions;
+using EasyID.Server.Filters;
 using EasyExtensions.AspNetCore.Extensions;
 using EasyExtensions.EntityFrameworkCore.Extensions;
 using EasyExtensions.AspNetCore.Authorization.Extensions;
@@ -23,7 +24,10 @@ namespace EasyID.Server
                 .AddValidatorsFromAssemblyContaining<Program>()
                 .AddDefaultCorsWithOrigins(corsOrigins)
                 .AddPostgresDbContext<AppDbContext>(builder.Configuration)
-                .AddControllers().Services
+                .AddControllers(options => 
+                {
+                    options.Filters.Add<EmptyStringToNullFilter>();
+                }).Services
                 .AddHealthChecks().Services
                 .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<Program>())
                 .AddUsersMeRewrite();

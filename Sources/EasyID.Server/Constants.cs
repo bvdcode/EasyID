@@ -26,11 +26,6 @@
                 public const string Create = "users.create";
                 public const string ChangeAvatar = "users.change_avatar";
                 public const string ChangePassword = "users.change_password";
-
-                public static readonly string[] All =
-                [
-                    View, Edit, Delete, Create, ChangeAvatar, ChangePassword
-                ];
             }
         }
     }

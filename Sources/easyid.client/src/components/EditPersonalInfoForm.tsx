@@ -104,7 +104,7 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
             value={middleName}
             size="small"
             onChange={(e) => setMiddleName(e.target.value)}
-            autoComplete="additional-name"
+            autoComplete="off"
           />
         </Grid>
       </Grid>

@@ -25,13 +25,15 @@ namespace EasyID.Server
                 .AddPostgresDbContext<AppDbContext>(builder.Configuration)
                 .AddControllers().Services
                 .AddHealthChecks().Services
-                .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<Program>());
+                .AddMediatR(x => x.RegisterServicesFromAssemblyContaining<Program>())
+                .AddUsersMeRewrite();
 
             var app = builder.Build();
             app.UseExceptionHandler();
             app.UseCors().UseDefaultFiles();
             app.MapStaticAssets();
             app.UseAuthentication();
+            app.UseUsersMeRewrite();
             app.UseAuthorization();
             app.MapControllers();
             app.MapFallbackToFile("/index.html");

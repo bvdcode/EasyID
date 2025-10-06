@@ -12,7 +12,7 @@ namespace EasyID.Server.Validators
 
             RuleFor(x => x.NewPassword)
                 .NotEmpty().WithMessage("New password is required.")
-                .MinimumLength(8)
+                .MinimumLength(6)
                 .WithMessage("New password must be at least 8 characters long.")
                 .MaximumLength(1024)
                 .WithMessage("New password must not exceed 128 characters.");

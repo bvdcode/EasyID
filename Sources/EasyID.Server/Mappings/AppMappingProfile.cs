@@ -8,7 +8,10 @@ namespace EasyID.Server.Mappings
     {
         public AppMappingProfile()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<User, UserDto>()
+                .ForMember(d => d.Groups, opt => opt.Ignore())
+                .ForMember(d => d.Roles, opt => opt.Ignore())
+                .ForMember(d => d.Permissions, opt => opt.Ignore());
         }
     }
 }

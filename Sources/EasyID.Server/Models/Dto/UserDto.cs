@@ -9,5 +9,8 @@
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? MiddleName { get; set; }
+        public string[] Groups { get; set; } = [];
+        public string[] Roles { get; set; } = [];
+        public string[] Permissions { get; set; } = [];
     }
 }

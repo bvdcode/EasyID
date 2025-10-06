@@ -74,7 +74,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         hidden
         ref={fileRef}
         type="file"
-        accept="image/*"
+        accept="image/png,image/jpeg,image/gif,image/webp,image/bmp,image/tiff,image/x-tga,image/qoi,image/x-portable-bitmap"
         onChange={onChange}
       />
       <Button

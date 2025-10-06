@@ -13,6 +13,7 @@ export interface SidebarItem {
   icon?: React.ReactNode;
   route: string;
   order?: number;
+  roles?: string[]; // allowed roles; if omitted => visible to all
 }
 
 interface SidebarProps {

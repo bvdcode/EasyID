@@ -31,12 +31,14 @@ function App() {
                           label: "Dashboard",
                           route: "/app",
                           order: 1,
+                          roles: [], // visible to all
                         },
                         {
                           key: "profile",
                           label: "Profile",
                           route: "/app/profile",
                           order: 100,
+                          roles: ["admin", "user"],
                         },
                       ]}
                     />

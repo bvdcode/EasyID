@@ -20,12 +20,12 @@
         {
             public static class Users
             {
-                public const string View = "users.view";
-                public const string Edit = "users.edit";
-                public const string Delete = "users.delete";
-                public const string Create = "users.create";
-                public const string ChangeAvatar = "users.change_avatar";
-                public const string ChangePassword = "users.change_password";
+                public const string View = "easyid.users.view";
+                public const string Edit = "easyid.users.edit";
+                public const string Delete = "easyid.users.delete";
+                public const string Create = "easyid.users.create";
+                public const string ChangeAvatar = "easyid.users.change_avatar";
+                public const string ChangePassword = "easyid.users.change_password";
             }
         }
     }

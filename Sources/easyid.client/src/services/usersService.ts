@@ -8,6 +8,9 @@ export interface UserDto {
   firstName?: string;
   lastName?: string;
   middleName?: string;
+  roles?: string[];
+  permissions?: string[];
+  groups?: string[];
 }
 
 export interface UpdateUserPayload {

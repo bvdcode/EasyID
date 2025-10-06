@@ -19,10 +19,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ sidebarItems, title }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const sorted = useMemo(
-    () => [...sidebarItems].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
-    [sidebarItems],
-  );
+  const sorted = useMemo(() => {
+    const userRoles = (user?.roles ?? []).map((r) => r.toLowerCase());
+    const filtered = sidebarItems.filter((item) => {
+      if (!item.roles || item.roles.length === 0) return true; // public
+      return item.roles.some((r) => userRoles.includes(r.toLowerCase()));
+    });
+    return [...filtered].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  }, [sidebarItems, user?.roles]);
 
   const activeKey = useMemo(() => {
     const path = location.pathname;

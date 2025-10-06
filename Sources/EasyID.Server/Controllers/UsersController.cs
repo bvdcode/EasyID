@@ -7,6 +7,7 @@ using EasyID.Server.Models.Dto;
 using EasyExtensions.Abstractions;
 using EasyID.Server.Database.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace EasyID.Server.Controllers
 {
@@ -17,7 +18,50 @@ namespace EasyID.Server.Controllers
         public async Task<UserDto> GetUser(Guid id)
         {
             User user = await _dbContext.GetUserAsync(id);
-            return user.Adapt<UserDto>();
+            var dto = user.Adapt<UserDto>();
+
+            // Load related data: groups -> roles -> permissions
+            var groups = await _dbContext.GroupUsers
+                .Where(gu => gu.UserId == user.Id)
+                .Select(gu => gu.Group)
+                .ToListAsync();
+            dto.Groups = [.. groups.Select(g => g.Name)
+                .Distinct()
+                .OrderBy(s => s)];
+
+            var roleIds = await _dbContext.RoleGroups
+                .Where(rg => groups
+                .Select(g => g.Id)
+                .Contains(rg.GroupId))
+                .Select(rg => rg.RoleId)
+                .Distinct()
+                .ToListAsync();
+
+            var roles = await _dbContext.Roles
+                .Where(r => roleIds.Contains(r.Id))
+                .ToListAsync();
+
+            dto.Roles = [.. roles
+                .Select(r => r.Name)
+                .Distinct()
+                .OrderBy(s => s)];
+
+            var permissionIds = await _dbContext.PermissionRoles
+                .Where(pr => roleIds.Contains(pr.RoleId))
+                .Select(pr => pr.PermissionId)
+                .Distinct()
+                .ToListAsync();
+
+            var permissions = await _dbContext.Permissions
+                .Where(p => permissionIds.Contains(p.Id))
+                .ToListAsync();
+
+            dto.Permissions = [.. permissions
+                .Select(p => p.Name)
+                .Distinct()
+                .OrderBy(s => s)];
+
+            return dto;
         }
 
         [Authorize]

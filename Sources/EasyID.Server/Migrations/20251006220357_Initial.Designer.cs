@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EasyID.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251006213440_Initial")]
+    [Migration("20251006220357_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

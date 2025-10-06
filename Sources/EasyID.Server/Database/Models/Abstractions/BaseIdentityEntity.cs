@@ -9,10 +9,10 @@ namespace EasyID.Server.Database.Models.Abstractions
     public abstract class BaseIdentityEntity : BaseEntity<Guid>
     {
         [Column("display_name")]
-        public string DisplayName { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = null!;
 
         [Column("name")]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } = null!;
 
         [Column("description")]
         public string? Description { get; set; }

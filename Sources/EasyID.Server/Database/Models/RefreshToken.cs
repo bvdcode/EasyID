@@ -10,7 +10,7 @@ namespace EasyID.Server.Database.Models
     public class RefreshToken : BaseEntity<Guid>
     {
         [Column("token")]
-        public string Token { get; set; } = string.Empty;
+        public string Token { get; set; } = null!;
 
         [Column("user_id")]
         public Guid UserId { get; set; }
@@ -19,13 +19,13 @@ namespace EasyID.Server.Database.Models
         public IPAddress IpAddress { get; set; } = IPAddress.None;
 
         [Column("country")]
-        public string Country { get; set; } = string.Empty;
+        public string Country { get; set; } = null!;
 
         [Column("city")]
-        public string City { get; set; } = string.Empty;
+        public string City { get; set; } = null!;
 
         [Column("user_agent")]
-        public string UserAgent { get; set; } = string.Empty;
+        public string UserAgent { get; set; } = null!;
 
         [Column("expires_at")]
         public DateTime ExpiresAt { get; set; }

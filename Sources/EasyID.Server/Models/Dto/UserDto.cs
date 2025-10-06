@@ -2,9 +2,9 @@
 {
     public class UserDto
     {
-        public required Guid Id { get; init; }
-        public required string Email { get; init; }
-        public required string Username { get; init; }
+        public Guid Id { get; set; }
+        public string Email { get; set; } = null!;
+        public string Username { get; set; } = null!;
         public long? PhoneNumber { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }

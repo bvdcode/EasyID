@@ -10,16 +10,16 @@ namespace EasyID.Server.Database.Models
     public class User : BaseEntity<Guid>
     {
         [Column("username")]
-        public string Username { get; set; } = string.Empty;
+        public string Username { get; set; } = null!;
 
         [Column("email")]
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; set; } = null!;
 
         [Column("phone_number")]
-        public string? PhoneNumber { get; set; } = string.Empty;
+        public string? PhoneNumber { get; set; } = null!;
 
         [Column("password_phc")]
-        public string PasswordPhc { get; set; } = string.Empty;
+        public string PasswordPhc { get; set; } = null!;
 
         [Column("password_version")]
         public int PasswordVersion { get; set; }

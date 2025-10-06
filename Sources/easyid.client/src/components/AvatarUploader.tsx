@@ -10,7 +10,6 @@ import { userStore } from "../stores/userStore";
 import UsersService from "../services/usersService";
 import React, { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 interface AvatarUploaderProps {
   size?: number;
@@ -29,7 +28,6 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState(0);
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   // avatar endpoint is public (no auth) so always use concrete id, not "me"
   const baseUrl = user ? UsersService.avatarUrl(user.id) : "";
@@ -49,18 +47,6 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         await fetchUser();
         setVersion((v) => v + 1); // cache-bust
       } catch (err) {
-        const error = err as { response?: { status?: number } };
-        const status = error.response?.status;
-
-        // Redirect to login on auth errors
-        if (status === 401 || status === 403) {
-          navigate("/login", {
-            replace: true,
-            state: { reason: "unauthorized" },
-          });
-          return;
-        }
-
         setError(
           (err as Error).message ||
             t("common.error", { defaultValue: "Error" }),
@@ -70,7 +56,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         if (fileRef.current) fileRef.current.value = "";
       }
     },
-    [fetchUser, navigate, t],
+    [fetchUser, t],
   );
 
   if (!user) return null;

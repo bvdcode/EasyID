@@ -3,7 +3,6 @@ import UsersService from "../services/usersService";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, Button, Grid, Stack, TextField } from "@mui/material";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 export interface PersonalInfoData {
   username?: string;
@@ -24,7 +23,6 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
   onSaved,
 }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [username, setUsername] = useState(initialUsername ?? "");
   const [firstName, setFirstName] = useState(initial?.firstName ?? "");
   const [lastName, setLastName] = useState(initial?.lastName ?? "");
@@ -147,17 +145,6 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
     } catch (e: unknown) {
       const err = e as Record<string, unknown>;
       const response = err?.response as Record<string, unknown> | undefined;
-      const status = response?.status as number | undefined;
-
-      // Redirect to login on auth errors
-      if (status === 401 || status === 403) {
-        navigate("/login", {
-          replace: true,
-          state: { reason: "unauthorized" },
-        });
-        return;
-      }
-
       const msg =
         (response?.data as string | undefined) ||
         (err?.message as string | undefined) ||

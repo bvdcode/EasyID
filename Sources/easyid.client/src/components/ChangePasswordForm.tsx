@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Alert, Box, Button, Stack, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import UsersService from "../services/usersService";
 import { toast } from "react-toastify";
 
@@ -11,7 +10,6 @@ interface ChangePasswordFormProps {
 
 const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSuccess }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatNewPassword, setRepeatNewPassword] = useState("");
@@ -51,14 +49,6 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSuccess }) =>
     } catch (e: unknown) {
       const err = e as Record<string, unknown>;
       const response = (err?.response as Record<string, unknown> | undefined);
-      const status = response?.status as number | undefined;
-      
-      // Redirect to login on auth errors
-      if (status === 401 || status === 403) {
-        navigate("/login", { replace: true, state: { reason: "unauthorized" } });
-        return;
-      }
-      
       const data = response?.data as unknown;
       const message = (err?.message as string | undefined) ?? (typeof data === 'string' ? data : undefined);
       const errorMsg = message ?? "Unknown error";
@@ -67,7 +57,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSuccess }) =>
     } finally {
       setSubmitting(false);
     }
-  }, [canSubmit, navigate, newPassword, oldPassword, onSuccess]);
+  }, [canSubmit, newPassword, oldPassword, onSuccess]);
 
   return (
     <Stack gap={2}>

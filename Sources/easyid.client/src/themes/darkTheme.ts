@@ -28,14 +28,14 @@ export const darkTheme = createTheme({
         "input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill":
           {
             WebkitTextFillColor: "#e6e6e6",
-            WebkitBoxShadow: "0 0 0px 1000px #151A21 inset",
-            transition:
-              "background-color 999999s ease 0s, color 999999s ease 0s",
+            WebkitBoxShadow: "0 0 0px 1000px rgba(32,32,32,0.9) inset",
+            transition: "background-color 0s ease 0s, color 0s ease 0s",
             caretColor: "#e6e6e6",
+            borderRadius: 4,
           },
         "input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus":
           {
-            WebkitBoxShadow: "0 0 0px 1000px #151A21 inset",
+            WebkitBoxShadow: "0 0 0px 1000px rgba(32,32,32,0.9) inset",
           },
       },
     },

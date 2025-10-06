@@ -83,6 +83,8 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
             value={firstName}
             size="small"
             onChange={(e) => setFirstName(e.target.value)}
+            autoComplete="off"
+            inputProps={{ autoComplete: "new-first-name" }}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -92,6 +94,8 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
             value={lastName}
             size="small"
             onChange={(e) => setLastName(e.target.value)}
+            autoComplete="off"
+            inputProps={{ autoComplete: "new-last-name" }}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -101,6 +105,8 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
             value={middleName}
             size="small"
             onChange={(e) => setMiddleName(e.target.value)}
+            autoComplete="off"
+            inputProps={{ autoComplete: "new-middle-name" }}
           />
         </Grid>
       </Grid>

@@ -14,7 +14,6 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSuccess }) =>
   const [newPassword, setNewPassword] = useState("");
   const [repeatNewPassword, setRepeatNewPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [touched, setTouched] = useState({ old: false, next: false, repeat: false });
   const [submitAttempted, setSubmitAttempted] = useState(false);
@@ -35,11 +34,11 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSuccess }) =>
     setSubmitAttempted(true);
     if (!canSubmit) return;
     setSubmitting(true);
-    setError(null);
     setSuccess(false);
     try {
       await UsersService.changePassword(oldPassword, newPassword);
       setSuccess(true);
+      toast.success(t("components.changePassword.messages.passwordChanged"));
       setOldPassword("");
       setNewPassword("");
       setRepeatNewPassword("");
@@ -52,17 +51,15 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSuccess }) =>
       const data = response?.data as unknown;
       const message = (err?.message as string | undefined) ?? (typeof data === 'string' ? data : undefined);
       const errorMsg = message ?? "Unknown error";
-      setError(errorMsg);
       toast.error(errorMsg);
     } finally {
       setSubmitting(false);
     }
-  }, [canSubmit, newPassword, oldPassword, onSuccess]);
+  }, [canSubmit, newPassword, oldPassword, onSuccess, t]);
 
   return (
     <Stack gap={2}>
-  {error && <Alert severity="error">{error}</Alert>}
-  {success && <Alert severity="success">{t("components.changePassword.messages.passwordChanged")}</Alert>}
+      {success && <Alert severity="success">{t("components.changePassword.messages.passwordChanged")}</Alert>}
       <TextField
         label={t("profile.fields.oldPassword")}
         type="password"

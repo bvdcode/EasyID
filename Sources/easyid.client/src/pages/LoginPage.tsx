@@ -54,11 +54,8 @@ const LoginPage: React.FC = () => {
   await userStore.getState().fetchUser();
   navigate("/app", { replace: true });
     } catch (e: unknown) {
-      const status =
-        typeof e === "object" && e !== null && "response" in e
-          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (e as Record<string, any>).response?.status
-          : undefined;
+      const err = e as { response?: { status?: number } };
+      const status = err.response?.status;
       if (status === 401) {
         const msg = t("loginErrors.invalidCredentials", { defaultValue: "Invalid username or password" });
         setError(msg);

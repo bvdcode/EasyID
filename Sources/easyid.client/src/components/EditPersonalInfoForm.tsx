@@ -154,6 +154,7 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
     } finally {
       setSaving(false);
     }
+    // Validators are inline but stable, data memo already includes all field dependencies
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, onSaved, t]);
 
@@ -210,6 +211,10 @@ const EditPersonalInfoForm: React.FC<EditPersonalInfoFormProps> = ({
             error={!!middleNameError}
             helperText={middleNameError}
             autoComplete="off"
+            inputProps={{
+              "data-form-type": "other",
+              "data-lpignore": "true",
+            }}
           />
         </Grid>
       </Grid>

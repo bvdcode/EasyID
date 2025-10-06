@@ -22,6 +22,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   const [version, setVersion] = useState(0);
   const { t } = useTranslation();
 
+  // avatar endpoint is public (no auth) so always use concrete id, not "me"
   const baseUrl = user ? UsersService.avatarUrl(user.id) : "";
   const src = user ? `${baseUrl}?v=${version}` : undefined; // version busts browser cache after upload
 

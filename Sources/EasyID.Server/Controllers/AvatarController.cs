@@ -1,7 +1,9 @@
-﻿using EasyID.Server.Database;
+﻿using SixLabors.ImageSharp;
+using EasyID.Server.Database;
 using Microsoft.AspNetCore.Mvc;
+using EasyID.Server.Extensions;
 using EasyID.Server.Database.Models;
-using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using Microsoft.AspNetCore.Authorization;
 
@@ -9,7 +11,6 @@ namespace EasyID.Server.Controllers
 {
     public class AvatarController(AppDbContext _dbContext, IConfiguration _configuration) : ControllerBase
     {
-
         [HttpGet(Routes.Users + "/{id:guid}/avatar")]
         [HttpGet(Routes.Users + "/{id:guid}/avatar.webp")]
         public async Task<IActionResult> GetAvatar([FromRoute] Guid id)
@@ -27,7 +28,8 @@ namespace EasyID.Server.Controllers
         public async Task<IActionResult> UpdateAvatar([FromForm] IFormFile file)
         {
             User user = await _dbContext.GetUserAsync(User);
-            if (file.Length > 2 * 1024 * 1024)
+            int avatarFileSizeLimitMb = _configuration.GetValue("AvatarFileSizeLimitMB", 2);
+            if (file.Length > avatarFileSizeLimitMb * 1024 * 1024)
             {
                 return BadRequest("Avatar file size exceeds the limit of 2MB.");
             }

@@ -19,7 +19,7 @@ export const userStore = create<UserState>((set) => ({
   async fetchUser() {
     set({ loading: true, error: null });
     try {
-      const u = await UsersService.me();
+  const u = await UsersService.get('me');
       set({ user: u, loading: false });
       return u;
     } catch (e) {

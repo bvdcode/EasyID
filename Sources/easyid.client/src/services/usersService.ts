@@ -10,14 +10,22 @@ export interface UserDto {
   middleName?: string;
 }
 
+export interface UpdateUserPayload {
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+}
+
 export default class UsersService {
   /**
    * Fetch current user using the special "me" token.
    * (GET users/me)
    */
+  /**
+   * @deprecated Use get('me') for uniform style.
+   */
   static async me(): Promise<UserDto> {
-    const res = await apiClient.get<UserDto>("/users/me");
-    return res.data;
+    return this.get("me");
   }
 
   /**
@@ -33,6 +41,24 @@ export default class UsersService {
    */
   static avatarUrl(userId: string): string {
     return `${API_BASE_URL}/users/${userId}/avatar`; // no extension; server handles content type
+  }
+
+  /**
+   * Lightweight ETag-based avatar fetch (optional usage). Returns a blob URL and ETag.
+   * If server doesn't send ETag, it simply refetches each call.
+   */
+  static async fetchAvatarWithCache(userId: string, previousEtag?: string): Promise<{ blobUrl: string; etag?: string; notModified?: boolean; }>{
+    const headers: Record<string, string> = {};
+    if (previousEtag) headers["If-None-Match"] = previousEtag;
+    const res = await fetch(this.avatarUrl(userId), { headers });
+    if (res.status === 304) {
+      return { blobUrl: "", etag: previousEtag, notModified: true };
+    }
+    if (!res.ok) throw new Error(`Avatar fetch failed: ${res.status}`);
+    const etag = res.headers.get("ETag") || undefined;
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    return { blobUrl, etag };
   }
 
   /**
@@ -62,7 +88,7 @@ export default class UsersService {
    * Patch personal info (PATCH users/{id})
    */
   static async updatePersonalInfo(
-    data: { firstName?: string; lastName?: string; middleName?: string },
+    data: UpdateUserPayload,
     userId: string = "me"
   ): Promise<void> {
     await apiClient.patch(`/users/${userId}`, data);

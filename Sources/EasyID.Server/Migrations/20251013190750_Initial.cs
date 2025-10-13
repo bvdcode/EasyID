@@ -13,6 +13,24 @@ namespace EasyID.Server.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "applications",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    image_webp_bytes = table.Column<byte[]>(type: "bytea", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    display_name = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true),
+                    is_system = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_applications", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "groups",
                 columns: table => new
                 {
@@ -91,7 +109,7 @@ namespace EasyID.Server.Migrations
                     phone_number = table.Column<string>(type: "text", nullable: true),
                     password_phc = table.Column<string>(type: "text", nullable: false),
                     password_version = table.Column<int>(type: "integer", nullable: false),
-                    first_name = table.Column<string>(type: "text", nullable: true),
+                    first_name = table.Column<string>(type: "text", nullable: false),
                     last_name = table.Column<string>(type: "text", nullable: true),
                     middle_name = table.Column<string>(type: "text", nullable: true),
                     failed_count = table.Column<int>(type: "integer", nullable: false),
@@ -102,6 +120,33 @@ namespace EasyID.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_users", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "app_access_groups",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    application_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_app_access_groups", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_app_access_groups_applications_application_id",
+                        column: x => x.application_id,
+                        principalTable: "applications",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_app_access_groups_groups_user_id",
+                        column: x => x.user_id,
+                        principalTable: "groups",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,6 +204,33 @@ namespace EasyID.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "app_access_users",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    application_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_app_access_users", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_app_access_users_applications_application_id",
+                        column: x => x.application_id,
+                        principalTable: "applications",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_app_access_users_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "group_users",
                 columns: table => new
                 {
@@ -211,6 +283,38 @@ namespace EasyID.Server.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_app_access_groups_application_id",
+                table: "app_access_groups",
+                column: "application_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_app_access_groups_user_id",
+                table: "app_access_groups",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_app_access_users_application_id",
+                table: "app_access_users",
+                column: "application_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_app_access_users_user_id",
+                table: "app_access_users",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_applications_display_name",
+                table: "applications",
+                column: "display_name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_applications_name",
+                table: "applications",
+                column: "name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_group_users_group_id",
@@ -309,6 +413,12 @@ namespace EasyID.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "app_access_groups");
+
+            migrationBuilder.DropTable(
+                name: "app_access_users");
+
+            migrationBuilder.DropTable(
                 name: "group_users");
 
             migrationBuilder.DropTable(
@@ -322,6 +432,9 @@ namespace EasyID.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "role_groups");
+
+            migrationBuilder.DropTable(
+                name: "applications");
 
             migrationBuilder.DropTable(
                 name: "permissions");

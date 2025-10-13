@@ -12,7 +12,10 @@ namespace EasyID.Server.Database
         public DbSet<RoleGroup> RoleGroups { get; set; } = null!;
         public DbSet<GroupUser> GroupUsers { get; set; } = null!;
         public DbSet<Permission> Permissions { get; set; } = null!;
+        public DbSet<Application> Applications { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+        public DbSet<AppAccessUser> AppAccessUsers { get; set; } = null!;
+        public DbSet<AppAccessGroup> AppAccessGroups { get; set; } = null!;
         public DbSet<PermissionRole> PermissionRoles { get; set; } = null!;
         public DbSet<LoginAuditEvent> LoginAuditEvents { get; set; } = null!;
     }
